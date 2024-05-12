@@ -1,0 +1,11 @@
+Documentation for StatusUpdate.py
+
+This program focuses on Adding new wells to the Access and SQL databases as well as statuses when new reports are received from accounting. 
+
+The program starts with a menu that will display a couple of different options. The first three all do the same thing but will have different steps depending on what the user needs.
+
+The first option will walk the user step by step through updating all information. It will open files when necessary and finish by updating SQL. This is for a user who has not run this program before or is not yet confident they can remember all the steps.
+
+The second option will open the same files and ask for the same inputs but will not have the steps laid out. This is for a user who is comfortable with the process and does not need prompts.
+
+The third option gives the user no prompts and run the update. It requires everything has been set up beforehand. This includes setting up the SQL Server to receive data. Because of this there is a secondary catch to make sure the user means to run this option. This is for the user who has run this program frequently and understands what it is doing.

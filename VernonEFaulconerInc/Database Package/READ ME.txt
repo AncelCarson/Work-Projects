@@ -1,0 +1,50 @@
+Documentation for Database Package
+
+Folder Structure:
+	Database Package
+	│
+	├── Modules
+	│    │
+	│    ├── Documents
+	│    │    │
+	│    │    ├── In Depth Documents
+	│    │    │   │
+	│    │    │   ├── ID Database Control READ ME.txt
+	│    │    │   ├── ID LoginCredentials READ ME.txt
+	│    │    │   ├── ID StatusUpdate READ ME.txt
+	│    │    │   ├── ID ToFlatFile READ ME.txt
+	│    │    │   └── ID UpdateDatabase READ ME.txt
+	│    │    │
+	│    │    ├── Access Database Documentation.txt
+	│    │    ├── Database Control READ ME.txt
+	│    │    ├── Database Package Explination.txt
+	│    │    ├── LoginCredentials READ ME.txt
+	│    │    ├── StatusUpdate READ ME.txt
+	│    │    ├── Steps to Install Python.txt
+	│    │    ├── ToFlatFile READ ME.txt
+	│    │    └── UpdateDatabases READ ME.txt
+	│    │
+	│    ├── __pycache__
+	│    │    ├── LoginCredentials.cpython─37
+	│    │    ├── StatusUpdate.cpython─37
+	│    │    └── UpdateDatabases.cpython─37
+	│    │
+	│    ├── UpdateDatabases.py
+	│    ├── ToFlatFile.py
+	│    ├── StatusUpdate.py
+	│    ├── LoginCredentials.py
+	│    ├── Monthly Status Update.xlsx
+	│    └── MonthlyFlatFile.csv
+	│
+	├── READ ME
+	└── Database Control.py
+
+This collection of programs and files is used to update the Microsoft Access and SQL Server databases that receive information from Drilling Info.
+
+The purpose of this is to reduce the amount of time needed to enter data to be used for internal records.
+
+The Database Control file will run any process needed to keep everything up to date. Simply double click the program to begin. 
+
+--------------------------------
+
+For a more in depth explanation, check the "Database Package Explination.txt" file in the Documents folder.

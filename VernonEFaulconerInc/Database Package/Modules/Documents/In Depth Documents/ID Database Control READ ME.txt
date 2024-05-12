@@ -1,0 +1,12 @@
+ In Depth Documentation for Database Control.py
+
+This program coordinates all the others. While they can be run individually, running this program makes it easy to run one or multiple. 
+
+This is a relatively short program that consists of a single menu. Through the options it can run either UpdateDatabase.py and/or StatusUpdate.py programs or open a collection of other documents. Those documents are the Access Database, Monthly Status excel sheet, Package READ ME, Database Control READ ME, and the Database Documentation file.
+
+The only library used is the os library to open files. In terms of modules it uses the following:
+	LoginCredentials
+	UpdateDatabase
+	StatusUpdate
+	toFlatFile
+

@@ -1,0 +1,21 @@
+In Depth Documentation for LoginCredentials.py
+
+This program contains all keys needed to access the different databases as well as Drilling Info. This program is mostly passive only connecting to the correct sources and passing the connection to other programs.
+
+The needed libraries are as follows:
+	sys
+	pyodbc
+	logging
+	directaccess
+
+These libraries are necessary to connect to the required sources. Direct access is the library specifically made by Drilling Info to connect to their data. 
+
+Three connections are made, Drilling Info, Microsoft Access, and SQL server. The Access connection is the most likely to change. If the location of the database ever changes, the location will need to be updated in this program. The current database location is:
+
+	G:\ARIES\AC\Drilling Info Database.accdb
+
+DirectAccess and SQL will need little maintenance.
+ 
+	The login keys currently belong to: Sterling Winkler. 
+
+If the holder of the keys changes. They will need to be updated. For SQL UID and PWD will need to be updated. For Drilling Info the api_key, client_id, and client_secret will all need to be updated. These can be obtained through Drilling Info in their DirectAccess section.

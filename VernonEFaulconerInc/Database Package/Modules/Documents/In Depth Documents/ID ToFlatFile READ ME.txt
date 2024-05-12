@@ -1,0 +1,29 @@
+In Depth Documentation for ToFlatFile.py
+
+This program aids in the process of creating a flat file to be added into ARIES. 
+
+The required libraries are:
+	os 
+	pandas
+	datetime 
+
+The required module is:
+	LoginCredentials
+
+@ menu1
+
+Allows the user to select either a single month or a range of months.
+
+@ menu2 
+
+After selecting a range of months, the user can either to go back from the current month by a specific number or select a specific range.
+
+@ exportDate
+
+Handels querying data from Access to be writen to .csv file. Method uses a query built in Access:
+
+	SELECT [ARIES Master].DBSKEY, [ARIES Master].PROPNUM, Statuses.UnitNumber, [Production Monthly].PROD_DATE, [Production Monthly].PROD_MONTH_NO, [Production Monthly].GAS, [Production Monthly].OIL, [Production Monthly].WATER, [Production Monthly].UPDATE_DATE FROM (([DI Production Download] LEFT JOIN Statuses ON [DI Production Download].[Unit Number] = Statuses.UnitNumber) LEFT JOIN [ARIES Master] ON Statuses.UnitNumber = [ARIES Master].VEF_UNIT_NO) LEFT JOIN [Production Monthly] ON Statuses.API14 = [Production Monthly].API_NO WHERE PROD_DATE BETWEEN ? AND ?
+
+(Where "?"s are the start and end date specified by the user)
+
+The program also handels if the dates are the same as well as if they are entered in the wrong order.

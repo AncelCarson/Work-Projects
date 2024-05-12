@@ -1,0 +1,24 @@
+In Depth Documentation for StatusUpdate.py
+
+This program focuses on Adding new wells to the Access and SQL databases as well as statuses when new reports are received from accounting. 
+
+The required libraries are:
+	os 
+	pandas 
+
+The required module is:
+	LoginCredentials
+
+The program will primarily do the same thing three different ways. Going through the menu, they are ordered to most hand holding to least. They do all end in the same place doing the same functions. Because of this updateProcess will not be discussed
+
+@ addNewData
+
+This module takes a name given by the user and adds it to two locations. The last row in the Status Months table from the Access database and a new column in the Statuses table from the SQL database. The commands for these operations are in SQL and are as follows:
+	INSERT INTO [Status Months] VALUE(?)
+	ALTER TABLE Statuses ADD [{col_name}] nvarchar(MAX)
+
+(The ? and {col_name} are both the input from the user.)
+
+@ syncDatabase
+
+This method does the bulk of the processing. It pulls the most recent month from Access before also pulling the unit number and status for that specific month. Those statuses are then added to SQL in the column related to the month. It then pulls all data from Access in the Statuses table and the Unit numbers for each well from the SQL database in the Statuses table. The unit numbers are then compared so that any new ones can be added to the SQL server.

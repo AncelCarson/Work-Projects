@@ -1,0 +1,7 @@
+Documentation for Database Control.py
+
+This program coordinates all the others. While they can be run individually, running this program makes it easy to run one or multiple. 
+
+When run, a menu will display giving options to run the different functions or open certain documents.
+
+When everything has finished, the program will prompt the user and will end.

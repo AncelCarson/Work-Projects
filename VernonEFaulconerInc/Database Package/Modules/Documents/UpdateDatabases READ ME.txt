@@ -1,0 +1,17 @@
+Documentation for UpdateDatabase.py
+
+The above mentioned program will update both the SQL database as well as the Access database saved at this location: 
+
+	G:\ARIES\AC\Drilling Info Database.accdb
+
+The tables accessed are Statuses, Public Data, and Production Monthly while only Public Data and Production Monthly are edited.
+
+When running this program, two menus will display to help filter which operation needs to be completed. The first menu asks which database needs to be updated, the second one asks which operation needs to be completed.
+
+There are three different operations that can be performed. They are referenced in the program as NewAPICollection, StatusUpdate, and ProductionUpdate.
+
+NewAPICollection handles the addition of any new wells added to the database since the program was last run by searching Drilling Info using the well's API number, it pulls a collection of data points describing the well.
+
+StatusUpdate will update all characteristic data for every well in the database. Much like NewAPICollection, it searches by API number before pulling certain fields to be updated.
+
+ProductionUpdate will download any new entries for monthly production and add them to the database. Again, the API numbers are pulled and used to search Drilling info. The program then filters out any entries that are in the database so there are not duplicates.

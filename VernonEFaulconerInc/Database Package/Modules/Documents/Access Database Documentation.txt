@@ -1,0 +1,80 @@
+This file explains the different Tables, Queries, and Forms inside the Access database, the general upkeep, and the suggested way to make additions or changes. These will be discussed in order of appearance inside of the database and the description above.
+	Tables:
+		ARIES Master
+		DOI List
+		Heirarchy_20190612
+		Manual Entry
+		Production Monthly
+		Public Data
+		Status Months
+		Statuses
+		Unit Well Listings
+	Queries:
+		AC_Product
+		DOI Master Table
+		Master Table
+		Monthly Production
+		New ARIES Master
+		VEFI Active Wells
+	Forms:
+		Well Lookup
+
+
+Tables:
+
+	The ARIES Master table contains the identifiers used by ARIES to keep track of the individual wells.
+
+	The DOI List table contains the Unit Number and VEFI Name for all wells that VEF currently has interest in.
+
+	The Heirarchy_20190612 is some additional information given on select wells. This information is incorporated in the DOI Master Table and Master Table Queries.
+
+	The Production Monthly table contains all monthly production records for all wells in the database. Inside, the EntryID, ApiNo, ProdDate, ProdMonthNo, Gas, Liq, Wtr, and UpdateDate records are stored. This information is downloaded from Drilling Info (DI) using the "Update Final Database" python program. (Check under 'Production Update' in the "READ ME" text file for information on the program) The EntryID is a unique identifier used by DI to keep records separate. Outside of this database it serves no purpose. ApiNo is the API14 number of the well associated with the record. It is stored as e text string because some API numbers start with a '0'. ProdDate is the date the collection report was given. ProdMonthNo is the number of the month relative to the first production date of the related well. Gas, Liq, and Wtr are the reported gas, oil, and water values for the given month. The UpdateDate is the date that the particular record was updated on DI.
+
+	The Manual Entry table is a collection of wells that need to be manualy entered as opposed to using the data from Drilling Info. It is used primarily by a separate database but also functions a a reference list.
+
+	The Public Data table contains different pieces of information downloaded from DI for all the wells in the database. (Check under 'New API Collection' in the "READ ME" text file for information on the program) Internally the values are organized by API number. The table contains the API number, Well Name, Well Number, Operator, County, State, Field, Reservoir, Status, Spud Date, Completion Date, First Production Date, and Last Production Date as reported to DI. 
+
+	The Status Months table is a list of months where a report from Accounting is in the Status table. It exists purely to aid the Well Lookup form in selecting a production month.
+
+	The Statuses Table is the list of all wells VEF has had interest in since October 2018. Each record contains the Unit Number, VEFI Name, API 10 and 14, some extra fields, and a collection of columns for the different months of data. In the different month columns are the statuses of the wells as reported from Accounting. These statuses consist of SI, PDP, P&A, etc.
+
+	The Unit Well Listing table is a list of all operated wells and relevant data for each. This is a direct copy of the UNIT & WELL LISTING BY ENGINEER excel file. At this point in time the two are not linked but may be in the future.
+
+
+Queries:
+
+	The AC_PRODUCT query links the PROPNUM from the Prop Number table and ProdDate, Liq, Gas, and Wtr fields from the Production Monthly table. These are connected through the APIs table. When running the query press enter on the two windows that pop up to see all data.
+
+	The DOI Master Table query pulls relevant information from the Statuses, Heirarchy_20190612, Unit Well Listing, APIs, and Public Data tables. The search is limited to wells contained in the DOI list.
+
+	The Master Table query pulls relevant information from the Statuses, Heirarchy_20190612, Unit Well Listing, and Public Data tables. The search contains all wells that are in the database.
+
+	The Monthly Production query is used by the Well Lookup form to display all production data for a selected well. In order to use it without the form, an active API14 number must be entered into the pop up.
+
+	New ARIES Master is the Master Table with the addition of DBSKEY, PROPNUM, and SEQNUM from the ARIES Master table.
+
+	The VEFI Active Wells query shows all wells from the Master Table query where the VEF status is "New", "New Drill", "MS", "NS", or "PDP".
+
+
+Forms:
+
+	The Well Lookup form shows the information from the Master Data query in a simple, easy to read way. A unit number can be defined in the top drop down box. Entering one will update the data displayed on the screen. To see a well's status on a specific month use the drop down to select the appropriate option. To run the Monthly Production query, press the "View Monthly Production Data" button at the bottom of the field. This will return the Monthly Production of the well in the first drop down box.
+
+
+General Upkeep:
+
+	There are not many things that need to be maintained in the database. The primary thing to do is to run the python update programs. "Update Final Database" should be run at least once a month somewhere around the 15th. This will add any new public records that have been added in the last month. The program should last around 1 hour and requires user input at the start and end. (See the "UpdateDatabases READ ME" for specifics on the program)
+
+
+Updates and Changes:
+
+	The different tables will need different methods of updating. Some can be pasted over when they need updating and others will need to be updated one by one. They will be discussed from easiest to most complex.
+
+	The Production Monthly and Public Data tables do not need to be updated by hand. Their updates are handled by programs mentioned in General Upkeep.
+
+	The DOI List, Manual Entry, Prop Number and Status Months tables will need to be updated one by one. In PropNumber and Status Months, no entries need to be deleted. For the Status Months table add the name and year of the month as well as a new ID if the Status Table has been updated. For the Prop Number table add the ARIES ID with the corresponding Unit Number. For the DOI List table, new Unit Numbers and VEFI names can be added at the bottom. Any wells that are no longer in the DOI will need to be found and removed. Manual Entry will need to be updated when it is decided that wells can be taken from brilling info or should be entered by hand. Add and remove values from Manual Entry as needed.
+
+	The Heirarchy_20190612 and Unit Well Listing tables can be easily over written from their source files. When the UNIT & WELL LISTING BY ENGINEER file in the Engineering drive is updated or another Hierarchy file is made, the values can be directly copied and pasted. Be sure to delete all the values in the Access tables to avoid duplicate entries.
+
+	(This process covered by "StatusUpdate.py" program)
+	Updating the Statuses table is a move involved process. As such, a separate excel file has been made to aid in the update. The Statuses table is updated monthly from the G/L files from accounting. To start, add a column with the month and year to the Statuses table. Following that collect all Unit Numbers, VEFI Well Names, and Statuses for each well. This can be done in a different excel sheet and they do not have to be sorted. Copy the collected values and paste them in the first sheet of the Monthly Status Update excel file. Is should be in the same folder ad this file and the database. Once the values have been added to the first page of the file, move to the second page. Click somewhere in column A and select the Table Tools Design tab at the top. Inside click the Refresh button in the External Table Data section, this will add the new column from the database to the excel sheet. With the excel sheet updated make sure that the formula cells reach the very bottom of the table. After doing that, copy the status values towards the end of the sheet and paste them in the month column that was made earlier. This is most easily done by selecting the month at the top of the new column then pasting. Once that is finished, move to the third page of the Excel file. This page will have any Wells that are not in the database. In the first column, filter out any blanks and copy all entries. Make sure to copy all data from the Unit Number to the most recent month. Back in the database click the "*" at the bottom of the page and paste the copied values. When all values have been added, open the Status Months table. Click the empty field at the bottom of the Months column and type in the month that was just added. After that delete the data that was added to the excel file, save the file, close it, and save the database. If new wells were added to the Status table, find their API's and add them to the Statuses table. Once everything has been added, run the "UpdateDatabase" to download the most up to date public data.

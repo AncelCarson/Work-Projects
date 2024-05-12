@@ -1,0 +1,19 @@
+Visit this website and download the latest version of Python
+
+https://www.python.org/downloads/
+
+!!During the setup Wizard there will be a box to check to add Python to the PATH. Make sure to check this yes. This makes installing packages much easier.
+
+Once Python is downloaded, open the command line. Press "Windows Key + R" and type "cmd" into the window. Press enter
+
+Copy and paste the following commands to upgrade and install the important libraries:
+
+	python -m pip install --upgrade pip
+ 	pip install pyodbc
+	pip install logging
+	pip install pandas
+	pip install directaccess
+
+After this is done, the python programs should be able to run.
+
+	

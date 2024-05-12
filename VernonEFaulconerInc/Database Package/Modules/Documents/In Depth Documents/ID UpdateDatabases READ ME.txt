@@ -1,0 +1,107 @@
+In Depth Documentation for UpdateDatabase.py
+
+The above mentioned program will update both the SQL database as well as the Access database saved at this location: 
+
+	G:\ARIES\AC\Drilling Info Database.accdb
+
+The tables accessed are Statuses, Public Data, and Production Monthly while only Public Data and Production Monthly are edited.
+
+The program begins by loading all libraries and modules needed. The required libraries are as follows:
+	os
+	warnings
+	pandas
+	datatime
+In addition to the libraries a separate program is loaded as a module. The LoginCredentials.py file handles the connection to Access, SQL, and Drilling Info. For more information, find its respective READ ME(s).
+
+Once the connections have been made all variables are declared. 
+
+After all setup is completed, the program runs three different distinct tasks. The order is important and should not be changed. The program will search for any new API numbers from the Statuses table and add them to the Public Data table using the data from Drilling Info. After that all APIs will be collected from the Public Data table, the current status of the well will be collected from Drilling info, and the status will be updated in the Public Data table. Finally all APIs will be again collected from the Public Data table, following that the Monthly Production data from Drilling Info will be downloaded, and all new records will be added to the Production Monthly table. These steps will be referred to as New API Collection, Status Update, and Production Update respectively. When updating both databases, data is pulled and searched from the SQL database making the Access Database slave to it.
+
+In order to select a task, two menus will be displayed. Menu1 handles deciding which database needs to be opened while menu2 handles deciding which operation needs to be completed.
+
+@ NewAPICollection:
+
+The search in the Access database is written in SQL format. The query is as follows:
+	 SELECT API14 FROM Statuses WHERE NOT EXISTS (SELECT API FROM [Public Data] WHERE API = Statuses.API14
+This query looks for all API numbers that are in the Statuses table but not in the Public Data table and returns them. Once they are collected a query is made to Drilling Info checking the API number one at a time. The query searches for the API number and returns the following records for each well from the well-rollups table in Drilling Info:
+	WellName
+	WellNumber
+	ProductionType
+	Field
+	CountyParish
+	State
+	DIBasin
+	ProducingReservoir
+	DrillType
+	API14
+	OperatorAlias
+	SpudDate
+	CompletionDate
+	FirstProdDate
+	LastProdDate
+	WellStatus
+	SurfaceHoleLatitudeWGS84
+	SurfaceHoleLongitudeWGS84
+	OilGatherer
+	GasGatherer
+	MeasuredDepth
+	TrueVerticalDepth
+	GrossPerforatedInterval
+	UpperPerforation
+	LowerPerforation
+
+The data collected is in JSON format. To remedy this, pandas is used to organize the date into a table inside python. After the data is formatted it is added to the Public Data Table using the following SQL Command:
+	INSERT INTO [Public Data](ASSETNAME,LEASE,WELLNUM,MAJOR,FIELD,COUNTY,STATE,DI_BASIN,RESERVOIR,DRILL_TYPE,API,OPERATOR,SPUD_DATE,COMP_DATE,FIRST_PROD,LAST_PROD,DI_STATUS,LATITUDE,LONGITUDE,OIL_GATHERER,GAS_GATHERER,MD,TVD,PERF_INTERVAL,UPPER_PERF,LOWER_PERF) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+(The "?"s are the records described above.)
+
+@ StatusUpdate:
+
+The status update functions in much of the same way as new API collection. The search is in SQL format and is as follows:
+	SELECT API FROM [Public Data]
+This collects all API numbers from the Public Data table and queries them one at a time in Drilling Info. The records collected from the well-rollups table from Drilling Info are:
+	API14
+	OperatorAlias
+	ProducingReservoir
+	WellStatus
+	LastProdDate
+	OilGatherer
+	GasGatherer
+	GrossPerforatedInterval
+	UpperPerforation
+	LowerPerforation
+
+Once collected the information is converted from JSON format through pandas. The formatted data is then added to the Public Data table using the following SQL command:
+	UPDATE [Public Data] SET OPERATOR = ?, RESERVOIR = ?, DI_STATUS = ?, LAST_PROD = ?, OIL_GATHERER = ?, GAS_GATHERER = ?, PERF_INTERVAL = ?, UPPER_PERF = ?, LOWER_PERF = ? WHERE API = ?
+
+(The "?"s are the records described above.) 
+
+@ ProductionUpdate:
+
+The production update is the most complex step of the three. It starts the exact same as the status update by collecting all APIs from the Public Data table. Once the APIs are collected that are queried from the producing-entity-details table in Drilling Info. This is, on average, the longest process. Each well can have over 100 records and they are all returned by the query. In total there will be around 450,000 records returned. The records returned are as follows:
+	PdenProdId
+	ApiNo
+	ProdDate
+	ProdMonthNo
+	Gas
+	Liq
+	Wtr
+        UpdatedDate
+(PdenProdId is the unique identifier given to each record by Drilling Info.)
+
+Once the data is collected it is converted from JSON format and sorted by ID through pandas. After sorting, if the user has chosen to update the records, all entries in the selected database are deleted. This is done because it is much faster to delete and add back than to update every record. After the required steps, all EntityIDs are collected from the Production Monthly table using the following SQL command:
+	SELECT ENTRY_ID FROM [Production Monthly]
+This is done to compare the records from Drilling Info to those from the Access database. If an ID number appears in both, it does not need to be added as it would create a duplicate. Once they are collected, those values are sorted as well. Both sets are sorted to reduce the time of the next step. Each ID from Drilling Info is compared to the ID from the Access database. The sorting ensures that the matching IDs are close to each other in the order. If there is no match, the record from Drilling Info is added to the Access database. If there is a match the record is skipped and the ID is deleted from the EntryIDs list. This is done so that, as the program continues, the search does not need to search as much data each time.
+
+To add the data to the databases, the following SQL code is used:
+	INSERT INTO [Production Monthly](ENTRY_ID,API_NO,PROD_DATE,PROD_MONTH_NO,GAS,OIL,WATER,UPDATE_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+
+(The "?"s are the records described above.) 
+
+Once those three steps have run the link to the Access database is closed and the program prompts the user to terminate it.
+
+----------------------------------------------
+
+To access debug tools, type admin at either menu.
+
+Debug tools show the count of an output to track progress as well as the time it was printed to gauge time.

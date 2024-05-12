@@ -1,0 +1,7 @@
+Documentation for ToFlatFile.py
+
+This program aids in the process of creating a flat file to be added into ARIES. 
+
+To start there are two menus that allow the user to select a range of dates they would like to download.
+
+After selecting the dates the program will pull the required records from Access and write them to the MonthlyFlatFile.csv file.

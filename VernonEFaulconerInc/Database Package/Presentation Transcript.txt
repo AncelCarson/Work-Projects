@@ -1,0 +1,97 @@
+Most of you I know who I am but for those who don't, my name is Ancel Carson and I have been and intern here for the last month and a half.
+
+@ Slide 1
+
+While I have been here, I have been working with Sterling to help organize and automate different aspects of data collection. Specifically we have been working on pulling information on all operated and non-operated wells from Drilling Info and importing it into ARIES. I will discuss the Process of this automation, the programs used to complete this task, and the benefits of the automated system.
+
+@ Slide 2
+
+There are three major components in this process. Drilling Info, which is used as an external source to pull data from, Python, a programming language used to filter and format the data received, and Microsoft SQL which is used to hold all of the data locally.
+
+@ Slide 3 A
+
+I would assume most everyone knows what Drilling Info is but for those who do not, I will give a brief explanation. Drilling Info is an online database containing data on all wells in the United States. Almost any field you could want can be searched be it State, Basin, API number, Max production, or anything else. 
+
+@ Slide 3 B
+
+For our purpose we use it to pull characteristic and production data via API lookup. Just at a quick glance Drilling Info can give information about the well as well as a graph showing gas, oil, and water production across its entire life.
+
+@ Slide 3 C
+
+Drilling Info also has a section called Direct Access. This is what we used to make a connection directly to the data that we wanted to import.
+
+@ Slide 4
+
+Python is an up and coming programing language that is very quickly gaining popularity and traction. It is powerful in that it is one of the preferred languages for processing "Big Data". Light weight because it does not require in depth syntax to operate. Being that it is made for large amounts of data it is optimized to run quickly. Versatile being that there are many packages that can be downloaded for a wide range of programs, as well as its ability to connect to many different applications. It is also very widely used by companies such as Google, Film companies such as Industrial Light & Magic, YouTube, and even Drilling Info itself. It is this last one that lead to the automation as it is now.
+
+@ Slide 5
+
+To automate the collection and storage of data, two different programs are used. The first one does the bulk of the communicating to Drilling Info. It will send a list of APIs to look up and pull the monthly production along with data that describes the well. The second program works with internal data. It handles updating the status of a well month to month as well as the addition of new wells.
+
+@ Slide 6
+
+For more specifics the program handling updating from Drilling info is called UpdateDatabaces.py and is broken into three parts. The three sections follow a very similar process but will do different things. The first section will collect all public data for wells that have recently been added to the database. The second section will update certain fields such as the last production date and operator for all wells in the database. Finally, the third section will download the production data for each month across the life of the well and add any new records. The entire process takes around half an hour.
+
+@ Slide 7
+
+The program that works with internal data is called StatusUpdate.py. It will walk a user step by step through adding information to the database. It will open applications and handle as much setup as it can in the background. In the process an excel file will be opened alongside of an Access database. The excel file helps with ordering and adding data to the access database. Once added, all the data will be synced with SQL
+
+@ Slide 8 A
+
+In total there are four programs that go into the automation process and I have listed here. The first one acts as a control for the other three. It will run different functions based on what a user needs. The middle two have been discussed in the previous slide so I won’t go over them again. The last one doesn’t run any functions but rather contains the keys needed to connect to Drilling Info, Access, and SQL. It is used by the three programs so keeping the keys separate simplifies the structure. 
+
+@ Slide 8 B
+
+The interface with all of these programs is a series of simple menus. The user can type a selection and the desired program will run.
+
+@ Slide 9 A
+
+The results can be hard to display in SQL so Access was used to help visualize the data. I have made a form that will display all of the characteristic data pulled from Drilling Info for a specific well based on unit number. It simplifies searching for data over reading a full line from a spread sheet.
+
+@ Slide 9 B
+
+By selecting the View Monthly Production Data button, every production record for the selected well will be queried and displayed.
+
+@ Slide 9 C
+
+In addition to the information that was pulled from Drilling Info, a separate database has been made for the purpose of manually entering data. This is the form that was created as an interface to that secondary database. It allows the user to filter all wells in the database by state before making a selection my unit number. Directly the blow the information section is where the user can enter data for the selected well. By selecting a year and month and then pressing the Add to Production button. Doing this will create an entry that contains the API number, Production Date, Gas, Oil, and Water values, as well as the date the entry was added. When an entry is added. The corresponding box at the bottom will update showing there is an entry for that well during the selected month. The button is currently grayed out so that the user does not accidentally create a second entry. By changing the unit number or year, the boxes at the bottom will update to represent the data. 
+
+@ Slide 9 D
+
+Now there might be a question as to why manual entry is needed when the information if drawn from Drilling Info. The short answer is that there we a few wells where is could not be absolutely concluded that Drilling Info would be an adequate replacement. In order to test which wells could be drawn from Drilling Info, a years’ worth of downloaded data and a years’ worth from internal records were compared. If all records matched or were at least within 10% they were a good match. If not they were inspected individually. While there are wells that need to be done by hand it is only around 25% of the original number.
+
+@ Slide 10
+
+So an important part of understanding why an automated process might be better, is knowing what the current process is. I will admit that I do not fully understand the full process of how data is entered currently. Because of this I want to ask Sterling to give an explanation.
+
+*Sterling Here*
+
+@ Slide 11
+
+With the automation there are three key steps. Start the program, select the correct option from the menus, and return when the program has finished running. Everything else is handled by the program.
+
+@ Slide 12 A
+
+Comparing the two processes there are a few benefits to automation. It reduces the amount of time needed. Not only does the entire process take less time, no one needs to be there while it is running. Other things can happen while it runs in the background. The automation will reduce the number of people that the data is passed to. This reduces the number of potential typos that can happen while typing all the entries. It will run queries and other processes that would take time if they were done by hand. Finally, the data pulled from Drilling Info comes from production sent to the state
+
+@ Slide 12 B
+
+Using this Method will also allow for more descriptive fields to be consistently collected. These are the current fields that are currently recorded in the ARIES database. While there is enough to describe the well, it leaves quite a bit to be wanted. 
+
+@ Slide 12 C
+
+With the new method there are more fields to be collected. All the fields shown can be consistently collected for every well in Drilling Info.
+
+@ Slide 13
+
+That ends the part of the presentation based on the automation through Python. I understand that this internship was a sort of trial run so the rest of the presentation covers what I did here and what I took away from the experience. Before I get to that though, I want to ask if you have any questions on what I covered.
+
+*Questions*
+
+@ Slide 14 - 16
+
+*freeform*
+
+
+
+

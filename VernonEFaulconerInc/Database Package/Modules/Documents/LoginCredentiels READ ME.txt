@@ -1,0 +1,5 @@
+Documentation for LoginCredentials.py
+
+This program contains all keys needed to access the different databases as well as Drilling Info. This program is mostly passive only connecting to the correct sources and passing the connection to other programs.
+
+It is important that none of the keys contained inside are changed. If they are they will not be able to successfully connect.
