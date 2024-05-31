@@ -28,12 +28,12 @@ def main():
                                     'HGIJ','LQLN','SUCT'])
    print(dfIn)
    for index, row in dfIn.iterrows():
-      dType = row[7]
-      newRow = {'Unit':row[1],'Tonage':row[2],'SubUnit':row[3],'Circuit':row[4],
-               dType:row[0]}
+      dType = row["DrawingType"]
+      newRow = {'Unit':row["ParentUnit"],'Tonage':row["Tonage"],'SubUnit':row["SubUnit"],'Circuit':row["Circuit"],
+               dType:row["DrawingNumber"]}
       newRow[dType] = hyperlink(newRow[dType])
-      if row[5] == 1:
-         dfOut = pd.concat([dfOut, pd.DataFrame([newRow],columns = {'Unit','Tonage','SubUnit','Circuit',dType})], ignore_index = True)
+      if row["Active"] == 1:
+         dfOut = pd.concat([dfOut, pd.DataFrame([newRow],columns = ['Unit','Tonage','SubUnit','Circuit',dType])], ignore_index = True)
    dfOut.sort_values(by=['Unit','Tonage','SubUnit','Circuit'],inplace=True)
    dfOut = dfOut.fillna("")
    for sheet in worksheets:
@@ -46,7 +46,7 @@ def main():
       if len(dfs[num]) == 0:
          continue
       dfp.to_excel(writer, sheet_name=worksheets[num])
-   writer.save()
+   writer.close()
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
@@ -59,4 +59,4 @@ def hyperlink(drawing):
 " Checks if this program is being called "
 if __name__ == "__main__":
    main()
-   input("Program completed. Press Enter to close...")
+   input("Program completed. Press ENTER to close...")
