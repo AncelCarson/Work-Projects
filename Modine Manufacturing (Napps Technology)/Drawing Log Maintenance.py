@@ -1,7 +1,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 15/12/2020
-# Update Date: 14/6/2022
+# Update Date: 31/5/2024
 # DrawingLogMaintenance.py: Will categorize all drawings in excel workbook
 #       by type
 
