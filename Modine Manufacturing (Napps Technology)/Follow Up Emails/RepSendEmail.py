@@ -3,8 +3,20 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 15/5/2023
-# Update Date: 15/5/2024
+# Update Date: 12/6/2024
 # RepSendEmail.py
+
+"""This Program sends out formatted emails to a list of sels reps with open jobs.
+
+This program is to be run after running RepFollowupSheets.py. It reads the Email
+List sheet and sends 1 email per row. For each email, the body of text is changed
+to reflect a specific job before it is sent. 
+
+Functions:
+   main: Driver of the program
+   sendEmail: Sends an email for each job from the data file
+   getMessage: Builds the body of the email with information specific to the recipient
+"""
 
 #Libraries
 import smtplib
@@ -24,13 +36,16 @@ from email import encoders
 
 #Secret Variables
 load_dotenv()
-AEmail = os.getenv('AEmail')
-APassW = os.getenv('APassW')
+AEmail = os.getenv('AEmail')  #Saved User Email 
+APassW = os.getenv('APassW')  #Saved User Password 
 
 #Variables
-inputWorkbook = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\Job Followup 240415.xlsx'
+file_path = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
+files = sorted(glob.iglob(file_path), key=os.path.getctime, reverse=True)
+inputWorkbook = files[0]
 
 def main():
+   """Generates a dateframe based off of the given data"""
    dfIn = pd.read_excel(inputWorkbook, sheet_name = 'Email List', header = 0)
    print(dfIn)
    emailList = dfIn[['EmailAddress','First Name','CUSTOMER_REFERENCE','QuoteNum','Dollars','DaysLate','Sender','Company','Units']].copy()
@@ -39,9 +54,16 @@ def main():
 
    print(emailList)
 
+   print("Pulling email list from {0}.".format(inputWorkbook))
+
    sendEmail(emailList)
 
 def sendEmail(emails):
+   """Takes the dataframe and sends the email
+   
+   Parameters:
+      emails (dateframe): The list if jobs with emails, names, and other specific information
+   """
    SERVER = "smtp.office365.com"
 
    server = smtplib.SMTP(host = SERVER, port = 587)
@@ -49,6 +71,7 @@ def sendEmail(emails):
    server.starttls(context=context)
    server.login(AEmail, APassW)
 
+   #The test is intended to make sure the emails will send without sending emails to the reps. 
    test = input("Is this a test run? (Y/N)\n")
    if test == "n" or test == "N":
       pass
@@ -60,6 +83,14 @@ def sendEmail(emails):
                ["acarson@nappstech.com",'Napps','Napps General Test Chiller','1111','$32,566',95,'None','Napps',' for (1) 40Ton CGWR',False],
                ["acarson@nappstech.com",'Jetson','Jetson General Test Chiller','1111','$41,041',56,'None','Jetson',' for (1) 40Ton ACCS',True],]
       emails = pd.DataFrame(emails, columns = ['EmailAddress','First Name','CUSTOMER_REFERENCE','QuoteNum','Dollars','DaysLate','Sender','Company','Units','Jetson'])
+
+   #This test is intended to check that the program is reading the file correctly before sending emails.
+   sendIt = False
+   send = input("Do you want to send the emails? (Y/N)\n")
+   if send == "y" or send == "Y":
+      sendIt = True
+   else:
+      sendIt = False #Yes, this is redundant. Erroneously sending emails scares me so I am leaving it in.
 
    for index, row in emails.iterrows():
 
@@ -92,14 +123,21 @@ def sendEmail(emails):
 
       msg.attach(MIMEText(text, 'html'))
 
-      # # Send Email and login after timeout
-      # try:
-      #    server.sendmail(FROM, TO, msg.as_string())
-      # except SMTPRecipientsRefused:
-      #    print("Connection Timed Out. Reconnecting...")
-      #    server.login(AEmail, APassW)
-      #    print("Connection Restored")
-      #    server.sendmail(FROM, TO, msg.as_string())
+      if sendIt:
+         # Send Email and login after timeout
+         try:
+            server.sendmail(FROM, TO, msg.as_string())
+         except SMTPRecipientsRefused:
+            print("Connection Timed Out. Reconnecting...")
+            server.login(AEmail, APassW)
+            print("Connection Restored")
+            server.sendmail(FROM, TO, msg.as_string())
+         except Exception as e:
+            print("An error has occured. The email for {0} was not sent.".format(row['QuoteNum']))
+            print("Update the Follow Up Data Workbook before running this program again.")
+            print("Delete all jobs in the rows above {0} and save the file.".format(row['QuoteNum']))
+            input("Program Terminating. Press ENTER to Close...")
+            return
 
       print("{0} day {1} email sent to {2}: {3} Quote #{4}".format(days, note, row['First Name'], row['EmailAddress'], row['QuoteNum']))
       time.sleep(2)
@@ -107,6 +145,21 @@ def sendEmail(emails):
    server.quit()
 
 def getMessage(name, job, quote, price, sender, units, Jetson, days):
+   """Returns a string of HTLM code with user specific data to be the body of the email
+   
+   Parameters:
+      name (str): The first name of the email recipient
+      job (str): The Job Name
+      quote (str): The Job Number
+      price (str): The Price of the Job
+      sender (str): The inside Sales person who is responsible for the email reciepient
+      units (str): The Description of units on the job
+      Jetson (bool): Wether or not this email is from the Jetson Inbox
+      days (str): How many days it has been since the last follow up. 
+
+   Returns:
+      body (str) + signature (str): The body of the emailwith specific data
+   """
    body = """
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Hey {0},</p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>&nbsp;</p>
