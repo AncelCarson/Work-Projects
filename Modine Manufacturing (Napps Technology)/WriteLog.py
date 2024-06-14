@@ -60,6 +60,8 @@ def makeFile():
    Returns:
       file (str): File path to the newly created log file
    """
+   if not os.path.isdir(folder[:-2]):
+      os.system('mkdir "{}"'.format(folder[:-2]))
    fileDay = datetime.now().strftime('%d/%m/%Y')
    fileTime = datetime.now().strftime('%H:%M')
    day = datetime.now().strftime('%y%m%d')
