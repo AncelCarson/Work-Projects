@@ -1,18 +1,23 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/2/2024
-# Update Date: 16/2/2024
+# Update Date: 19/6/2024
 # WeekendReport.py
 
 """This Program compiles a weeks worth of logs and generates a report.
 
-Leave one blank line.  The rest of this docstring should contain an
-overall description of the module or program.  Optionally, it may also
-contain a brief description of exported classes and functions and/or usage
-examples.
+When this program is initialized, it loads in the files from the daily
+log program. Startign on today's date, it reads all files until the 
+most recent monday. The data from each log is loaded into a list, the
+time for each task is calculated, and like tasks are summed together
+to get to total time for the week. Using that data, stats for the week
+are calculated and an csv report is generated. 
 
 Functions:
    main: Driver of the program
+   get_day_list: Reads in the data for a single day
+   review_day: Summarizes the data for a single day and converts time stamps to hours on task
+   review_week: Summarizes the date for the whole week to be displayed in csv
 """
 #Libraries
 import os
@@ -27,7 +32,7 @@ sys.path.insert(0,r'S:\Programs\Add_ins')
 
 #Variables
 # day_set = 1 ## Used when Running Past Weeks
-input_folder = r"U:\Daily Log\*"
+input_folder = r"U:\Daily Log\*" # * means all if need specific format then *.txt
 output_folder = r"U:\Weekly Log"
 today = date.today()
 # today = date.today() + relativedelta(weekday=SU(day_set * -1)) ## Used when Running Past Weeks
@@ -38,13 +43,14 @@ week_days = (today - last_monday).days
 #Functions
 " Main Finction "
 def main():
+   """Loads in the files, sepparates the stats, and writes to the csv"""
    count = 0
    week_files = []
    week_tasks = []
    week_stats = [[],[],[],[]]
    lunch = []
    wfh = []
-   list_of_files = glob.glob(input_folder) # * means all if need specific format then *.txt
+   list_of_files = glob.glob(input_folder) 
    list_of_files.sort(key=os.path.getctime, reverse=True)
    for file in list_of_files:
       if count > 7:
@@ -72,6 +78,8 @@ def main():
    lunch_average = sum(lunch)/len(lunch)
    week_review = review_week(week_tasks, week_stats)
 
+   if not os.path.isdir(output_folder):
+      os.system('mkdir "{}"'.format(output_folder))
    file = output_folder + "\\Week of " + file_day + " Log.csv"
    week_review[0].to_csv(file, sep=',', mode='a')
    with open(file,"a") as f:
@@ -87,6 +95,14 @@ def main():
       f.write("Average Daily Tasks Changes: {:0.0f}\n".format(week_review[4]))
 
 def get_day_list(file):
+   """Turns the text of a txt file into a list to use in calculations
+   
+   Parameters:
+      file (file): The current log file 
+
+   Returns:
+      lines (list(str)): The data from the current log file in an iterable list
+   """
    lines = None
    with open(file) as f:
       lines = f.readlines()
@@ -96,6 +112,20 @@ def get_day_list(file):
    return lines
 
 def review_day(day_list):
+   """Returns a string of HTLM code with user specific data to be the body of the email
+   
+   Parameters:
+      day_list (list(str)): The data from the current log file in an iterable list
+
+   Returns:
+      item_list (List(datetime & str)): List of tasks that were done on the day and how long each one lasted
+      start_time (str): The time the day started
+      end_time (str): The time the day ended
+      day_length (float): How long the day was
+      task_change (int): Number of times the user changed tasks in a day
+      lunch (float): How long the day's lunchbreak was.
+      wfh (int): If the user worked from home that day
+   """
    day_list[0][1] = "Misc\n"
    start_time = day_list[0][0]
    end_time = None
@@ -140,6 +170,20 @@ def review_day(day_list):
    return [item_list, start_time, end_time, day_length, task_change, lunch, wfh]
 
 def review_week(week_tasks, week_stats):
+   """Returns a string of HTLM code with user specific data to be the body of the email
+   
+   Parameters:
+      week_tasks (List(datetime & str)): List of tasks that were done during the week 
+         and how long each one lasted
+      week_stats (List(float, float, float, int)): General day stats for the week
+
+   Returns:
+      task_df (dataframe): All the tasks for the week summed together
+      week_stats[0] (float): Average start time for the week
+      week_stats[1] (float): Average end time for the week
+      week_stats[2] (float): Average day length for the week
+      week_stats[3] (int): Average task changes per day for the week
+   """
    task_df = pd.DataFrame(week_tasks, columns = ["Hours", "Task"])
    task_df = task_df.groupby(by=["Task"]).sum()
    task_df.sort_values(by=['Hours'],inplace=True)
