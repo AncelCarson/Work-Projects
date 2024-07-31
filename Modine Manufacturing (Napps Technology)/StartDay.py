@@ -21,7 +21,7 @@ def main():
       if file == 1:
          os.startfile(r'C:\Program Files\SolidWorks Corp\SOLIDWORKS (2)\SLDWORKS.exe')
       elif file == 2:
-         os.startfile(r'C:\Program Files\Microsoft Office 15\root\office15\outlook.exe')
+         os.startfile(r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE')
       elif file == 3:
          list_of_files = glob.glob(r'S:\_Component Definitions\_ACCX Component Definition\*') # * means all if need specific format then *.csv
          latest_file = max(list_of_files, key=os.path.getctime)
