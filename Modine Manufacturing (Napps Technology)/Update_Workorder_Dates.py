@@ -1,7 +1,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 22/7/24
-# Update Date: 24/7/24
+# Update Date: 5/8/24
 # Update_Workorder_Dates.py
 
 """Creates a csv file with most recent prodiction start dates for all open Work Orders.
@@ -33,7 +33,8 @@ WorkOrderImport_path = r'U:\_Programs\Open Workorders Update.csv'
 
 #Functions
 " Main Finction "
-def main(): #Line 2 (H2O) - Schedule
+def main():
+   """Loads in most revent files and generates new one with the combined data"""
    loader = Loader("Loading GEMBA Files...", "GEMBA Files Loaded", 0.1).start()
    GEMBAs = sorted(glob.iglob(GEMBA_path), key=os.path.getctime, reverse=True)
    latest_GEMBA = GEMBAs[0]
@@ -51,7 +52,7 @@ def main(): #Line 2 (H2O) - Schedule
    loader.stop()
 
    loader = Loader("Loading Work Order Tables...", "Work Order Tables Loaded", 0.1).start()
-   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE", "WO_DUE_DATE", "SCHED_REL_DATE"])
+   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE", "WO_DUE_DATE", "SCHED_REL_DATE", "TRAVELR_PRINTED"])
    loader.stop()
 
    loader = Loader("Formatting Data...", "Data Formatted", 0.1).start()
@@ -75,6 +76,9 @@ def main(): #Line 2 (H2O) - Schedule
       order.EFFECTIVE_DATE = newDate
       order.WO_DUE_DATE = newDate
       order.SCHED_REL_DATE = newDate
+
+      if order.TRAVELR_PRINTED == " ":
+         order.TRAVELR_PRINTED = "N"
    
    dfWO.to_csv(WorkOrderImport_path)
 
