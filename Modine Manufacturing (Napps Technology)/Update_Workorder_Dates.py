@@ -28,8 +28,8 @@ from Loader import Loader
 
 #Variables
 GEMBA_path = r'S:\GEMBA Board\*.xlsx' # * means all if need specific format then *.xlsx
-WorkOrder_path = r'U:\_Programs\Open Workorders.csv'
-WorkOrderImport_path = r'U:\_Programs\Open Workorders Update.csv'
+WorkOrder_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders.csv'
+WorkOrderImport_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders Update.csv'
 
 #Functions
 " Main Finction "
