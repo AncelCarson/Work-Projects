@@ -19,7 +19,7 @@ def main():
    for char in selection:
       file = int(char)
       if file == 1:
-         os.startfile(r'C:\Program Files\SolidWorks Corp\SOLIDWORKS (2)\SLDWORKS.exe')
+         os.startfile(r'C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\SLDWORKS.exe')
       elif file == 2:
          os.startfile(r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE')
       elif file == 3:
