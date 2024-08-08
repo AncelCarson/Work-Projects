@@ -36,7 +36,7 @@ WorkOrderImport_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Rec
 def main():
    """Loads in most revent files and generates new one with the combined data"""
    loader = Loader("Loading GEMBA Files...", "GEMBA Files Loaded", 0.1).start()
-   GEMBAs = sorted(glob.iglob(GEMBA_path), key=os.path.getctime, reverse=True)
+   GEMBAs = sorted(glob.iglob(GEMBA_path), key=os.path.getmtime, reverse=True)
    latest_GEMBA = GEMBAs[0]
    loader.stop()
 
