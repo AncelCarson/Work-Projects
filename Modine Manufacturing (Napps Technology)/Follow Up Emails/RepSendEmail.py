@@ -78,8 +78,8 @@ def sendEmail(emails):
    else:
       emails = [["acarson@nappstech.com",'Napps','Napps Anas Test Chiller','1111','$32,566',95,'Anas','Napps',' for (1) 40Ton CGWR',False],
                ["acarson@nappstech.com",'Jetson','Jetson Anas Test Chiller','1111','$41,041',56,'Anas','Jetson',' for (1) 40Ton ACCS',True],
-               ["acarson@nappstech.com",'Napps','Napps Tom Test Chiller','1111','$32,566',95,'Tom','Napps',' for (1) 40Ton CGWR',False],
-               ["acarson@nappstech.com",'Jetson','Jetson Tom Test Chiller','1111','$41,041',56,'Tom','Jetson',' for (1) 40Ton ACCS',True],
+               ["acarson@nappstech.com",'Napps','Napps Preston Test Chiller','1111','$32,566',95,'Preston','Napps',' for (1) 40Ton CGWR',False],
+               ["acarson@nappstech.com",'Jetson','Jetson Preston Test Chiller','1111','$41,041',56,'Preston','Jetson',' for (1) 40Ton ACCS',True],
                ["acarson@nappstech.com",'Napps','Napps General Test Chiller','1111','$32,566',95,'None','Napps',' for (1) 40Ton CGWR',False],
                ["acarson@nappstech.com",'Jetson','Jetson General Test Chiller','1111','$41,041',56,'None','Jetson',' for (1) 40Ton ACCS',True],]
       emails = pd.DataFrame(emails, columns = ['EmailAddress','First Name','CUSTOMER_REFERENCE','QuoteNum','Dollars','DaysLate','Sender','Company','Units','Jetson'])
@@ -179,12 +179,11 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Price &nbsp; &nbsp; &nbsp; &nbsp;Lead Time &nbsp; &nbsp; &nbsp; &nbsp;Product or Option missing &nbsp; &nbsp; &nbsp; &nbsp;Footprint/Size &nbsp; &nbsp; &nbsp; &nbsp;Efficiency &nbsp; &nbsp; &nbsp; &nbsp;Other&nbsp;</p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>&nbsp;</p>
       """.format(name, job, quote, price, units)
-   TomJetson = """
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Tom Armstrong</span></strong></p>
+   PrestonJetson = """
+      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Preston Ware</span></strong></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Regional Sales Manager<strong>&nbsp;&ndash;&nbsp;</strong>Commercial Industrial</span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Modine Manufacturing Company</span></strong></p>
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>D:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:951-389-4741"><span style="color:#0563C1;">951-389-4741</span></a></span></p>
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>C:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:951-544-6283"><span style="color:#0563C1;">951-544-6283</span></a></span></p>
+      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>P:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:903-758-2900"><span style="color:#0563C1;">903-758-2900 Ext. 145</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="http://www.jetsonhvac.com/"><span style="color:#0563C1;">www.JetsonHVAC.com</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:Sales@JetsonHVAC.com"><span style="color:#0563C1;">Sales@JetsonHVAC.com</span></a></span></u></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
@@ -204,11 +203,11 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="http://www.jetsonhvac.com/"><span style="color:#0563C1;">www.JetsonHVAC.com</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:Sales@JetsonHVAC.com"><span style="color:#0563C1;">Sales@JetsonHVAC.com</span></a></span></u></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
-   TomNapps = """
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><strong>Tom Armstrong</strong></p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Regional Sales Manager</p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>D: 951-389-4741</p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>C: 951-544-6283</p>
+   PrestonNapps = """
+      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><strong>Preston Ware</strong></p>
+      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Inside Sales Engineer</p>
+      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Phone: 903-758-2900 X145</p>
+      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>Fax:&nbsp;903-758-2903</p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Napps Technology Corporation</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>905 W. Cotton Street</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Longview, TX 75604</u></p>
@@ -235,19 +234,21 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
 
    if Jetson:
-      if sender == "Tom":
-         signature = TomJetson
-      elif sender == "Anas":
-         signature = AnasJetson
-      else:
-         signature = JetsonSignature
+      # if sender == "Preston":
+      #    signature = PrestonJetson
+      # elif sender == "Anas":
+      #    signature = AnasJetson
+      # else:
+      #    signature = JetsonSignature
+      signature = AnasJetson
    else:
-      if sender == "Tom":
-         signature = TomNapps
-      elif sender == "Anas":
-         signature = AnasNapps
-      else:
-         signature = NappsSignature
+      # if sender == "Preston":
+      #    signature = PrestonNapps
+      # elif sender == "Anas":
+      #    signature = AnasNapps
+      # else:
+      #    signature = NappsSignature
+      signature = PrestonNapps
 
    return body + signature
 
