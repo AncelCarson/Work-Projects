@@ -1,7 +1,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 15/5/2024
+# Update Date: 15/8/2024
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -36,6 +36,7 @@ APassW = os.getenv('APassW')
 logFile = r'S:\Engineering Change Requests (ECR)\Change Requests\ECR Log 231121.xlsx'
 list_of_files = glob.glob(r'S:\Engineering Change Requests (ECR)\Engineering Change Request Form*.xlsx') # * means all if need specific format then *.csv
 latest_file = max(list_of_files, key=os.path.getctime)
+dfIn = pd.read_excel(latest_file, sheet_name = 'Lookup Tables')
 
 #Functions
 " Main Finction "
@@ -59,7 +60,8 @@ def main():
                          "Part/Subassemblies Affected" : affectedItems, "Work Order Number" : workOrder,
                          "Date of Request" : day}])], ignore_index = True)
    requestID = dfNewECR.shape[0] - 1
-   createForm(requestID, day, workOrder, product, affectedItems, user, userCode)
+   emails = getEmails(dfIn)
+   createForm(requestID, day, workOrder, product, affectedItems, user, userCode, emails)
 
    " Checking to See if Log File is still not in Use "
    file = fileCheck(logFile)
@@ -93,7 +95,8 @@ def lineCall(contact, unit, parts, workOrder):
                          "Part/Subassemblies Affected" : affectedItems, "Work Order Number" : workOrder,
                          "Date of Request" : day}])], ignore_index = True)
    requestID = dfNewECR.shape[0] - 1
-   createForm(requestID, day, workOrder, product, affectedItems, user, userCode)
+   emails = getEmails(dfIn)
+   createForm(requestID, day, workOrder, product, affectedItems, user, userCode, emails)
 
    " Checking to See if Log File is still not in Use "
    file = fileCheck(logFile)
@@ -142,7 +145,7 @@ def changeMenu():
       print('Incorrect selection\n\n')
       return changeMenu()
 
-def createForm(requestID, day, workOrder, product, affectedItems, user, userCode):
+def createForm(requestID, day, workOrder, product, affectedItems, user, userCode, emails):
    workBook = pyxl.load_workbook(latest_file)
    workSheet = workBook.active
    workSheet['B2'].value = "ENGINEERING CHANGE REQUEST " + str(requestID)
@@ -152,12 +155,12 @@ def createForm(requestID, day, workOrder, product, affectedItems, user, userCode
    workSheet['J14'].value = product
    workSheet['J16'].value = affectedItems
    workSheet['D38'].value = user
-   filePath = createFile(requestID, userCode)
+   filePath = createFile(requestID, userCode, emails)
    workBook.save(filePath)
    os.startfile(filePath)
 
 
-def createFile(requestID, userCode):
+def createFile(requestID, userCode, emails):
    day = datetime.now().strftime('%y%m%d')
    ECRFolder = 'S:\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {0}'.format(requestID)
    ECRFile = 'S:\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {0}\Engineering Change Request {0} {1} {2}.xlsx'.format(requestID, day, userCode)
@@ -168,10 +171,16 @@ def createFile(requestID, userCode):
       print("OS Error: {0}".format(eer))
       print("A File was not created.")
       return
-   sendEmail(ECRFolder, requestID)
+   sendEmail(ECRFolder, requestID, emails)
    return ECRFile
 
-def sendEmail(ECRFolder, requestID):
+def getEmails(dfIn):
+   emails = []
+   for email in dfIn["Emails"]:
+      emails.append(email)
+   return emails
+
+def sendEmail(ECRFolder, requestID, emails):
    SERVER = "smtp.office365.com"
 
    server = smtplib.SMTP(host = SERVER, port = 587)
@@ -179,7 +188,7 @@ def sendEmail(ECRFolder, requestID):
    server.starttls(context=context)
    server.login(AEmail, APassW)
 
-   TO = "acarson@nappstech.com, matthew.m.bevan@modine.com"
+   TO = ", ".join(emails)
    FROM = "techsupport@nappstech.com"
    SUBJECT = "ECR #{0}".format(requestID)
 
