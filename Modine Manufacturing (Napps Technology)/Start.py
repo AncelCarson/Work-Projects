@@ -1,7 +1,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 9/5/23
+# Update Date: 27/8/24
 # Start.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -31,3 +31,4 @@ def main():
 " Checks if this program is being called "
 if __name__ == "__main__":
    main()
+   input("Program completed. Press ENTER to close...")
