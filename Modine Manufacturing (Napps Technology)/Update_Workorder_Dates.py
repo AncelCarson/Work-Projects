@@ -1,7 +1,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 22/7/24
-# Update Date: 5/8/24
+# Update Date: 10/9/24
 # Update_Workorder_Dates.py
 
 """Creates a csv file with most recent prodiction start dates for all open Work Orders.
@@ -52,7 +52,7 @@ def main():
    loader.stop()
 
    loader = Loader("Loading Work Order Tables...", "Work Order Tables Loaded", 0.1).start()
-   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE", "WO_DUE_DATE", "SCHED_REL_DATE", "TRAVELR_PRINTED"])
+   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE", "WO_DUE_DATE", "SCHED_REL_DATE", "LAST_RESCH_DATE", "PRIOR_DUE_DATE", "TRAVELR_PRINTED"])
    loader.stop()
 
    loader = Loader("Formatting Data...", "Data Formatted", 0.1).start()
@@ -76,6 +76,8 @@ def main():
       order.EFFECTIVE_DATE = newDate
       order.WO_DUE_DATE = newDate
       order.SCHED_REL_DATE = newDate
+      order.LAST_RESCH_DATE = newDate
+      order.PRIOR_DUE_DATE = newDate
 
       if order.TRAVELR_PRINTED == " ":
          order.TRAVELR_PRINTED = "N"
