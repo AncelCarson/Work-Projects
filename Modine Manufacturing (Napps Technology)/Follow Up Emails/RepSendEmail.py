@@ -3,7 +3,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 15/5/2023
-# Update Date: 12/6/2024
+# Update Date: 16/9/2024
 # RepSendEmail.py
 
 """This Program sends out formatted emails to a list of sels reps with open jobs.
@@ -27,6 +27,7 @@ import glob
 import time
 import pandas as pd
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 
 from email.mime.multipart import MIMEMultipart
@@ -71,7 +72,10 @@ def sendEmail(emails):
    server.starttls(context=context)
    server.login(AEmail, APassW)
 
-   #The test is intended to make sure the emails will send without sending emails to the reps. 
+   # Sets the time that the server connection was made
+   connectTime = datetime.now()
+
+   # The test is intended to make sure the emails will send without sending emails to the reps. 
    test = input("Is this a test run? (Y/N)\n")
    if test == "n" or test == "N":
       pass
@@ -84,13 +88,13 @@ def sendEmail(emails):
                ["acarson@nappstech.com",'Jetson','Jetson General Test Chiller','1111','$41,041',56,'None','Jetson',' for (1) 40Ton ACCS',True],]
       emails = pd.DataFrame(emails, columns = ['EmailAddress','First Name','CUSTOMER_REFERENCE','QuoteNum','Dollars','DaysLate','Sender','Company','Units','Jetson'])
 
-   #This test is intended to check that the program is reading the file correctly before sending emails.
+   # This test is intended to check that the program is reading the file correctly before sending emails.
    sendIt = False
    send = input("Do you want to send the emails? (Y/N)\n")
    if send == "y" or send == "Y":
       sendIt = True
    else:
-      sendIt = False #Yes, this is redundant. Erroneously sending emails scares me so I am leaving it in.
+      sendIt = False # Yes, this is redundant. Erroneously sending emails scares me so I am leaving it in.
 
    for index, row in emails.iterrows():
 
@@ -131,6 +135,7 @@ def sendEmail(emails):
             print("Connection Timed Out. Reconnecting...")
             server.login(AEmail, APassW)
             print("Connection Restored")
+            connectTime = datetime.now()
             server.sendmail(FROM, TO, msg.as_string())
          except Exception as e:
             print("An error has occured. The email for {0} was not sent.".format(row['QuoteNum']))
@@ -141,6 +146,13 @@ def sendEmail(emails):
 
       print("{0} day {1} email sent to {2}: {3} Quote #{4}".format(days, note, row['First Name'], row['EmailAddress'], row['QuoteNum']))
       time.sleep(2)
+
+      # Checks if the connection has been running for more than 9 minutes and reconnected if it has
+      # This is to prevent the 10 minute timeout
+      if datetime.now() - connectTime >= timedelta(minutes=9):
+         server.login(AEmail, APassW)
+         connectTime = datetime.now()
+         print("Connection Reset")
 
    server.quit()
 
