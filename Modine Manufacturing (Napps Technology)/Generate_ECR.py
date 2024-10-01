@@ -1,7 +1,9 @@
+# pylint: disable=all
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 15/8/2024
+# Update Date: 1/10/2024
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -31,10 +33,11 @@ from email.mime.text import MIMEText
 load_dotenv()
 AEmail = os.getenv('AEmail')
 APassW = os.getenv('APassW')
+Shared_Drive = os.getenv('Shared_Drive')
 
 #Variables
-logFile = r'S:\Engineering Change Requests (ECR)\Change Requests\ECR Log 231121.xlsx'
-list_of_files = glob.glob(r'S:\Engineering Change Requests (ECR)\Engineering Change Request Form*.xlsx') # * means all if need specific format then *.csv
+logFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\ECR Log 231121.xlsx'
+list_of_files = glob.glob(fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Engineering Change Request Form*.xlsx') # * means all if need specific format then *.csv
 latest_file = max(list_of_files, key=os.path.getctime)
 dfIn = pd.read_excel(latest_file, sheet_name = 'Lookup Tables')
 
@@ -162,8 +165,8 @@ def createForm(requestID, day, workOrder, product, affectedItems, user, userCode
 
 def createFile(requestID, userCode, emails):
    day = datetime.now().strftime('%y%m%d')
-   ECRFolder = 'S:\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {0}'.format(requestID)
-   ECRFile = 'S:\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {0}\Engineering Change Request {0} {1} {2}.xlsx'.format(requestID, day, userCode)
+   ECRFolder = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {requestID}'
+   ECRFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request {requestID}\Engineering Change Request {requestID} {day} {userCode}.xlsx'
    try:
       os.system('mkdir "{}"'.format(ECRFolder))
       os.system('copy "{}" "{}"'.format(latest_file, ECRFile))
@@ -171,7 +174,7 @@ def createFile(requestID, userCode, emails):
       print("OS Error: {0}".format(eer))
       print("A File was not created.")
       return
-   sendEmail(ECRFolder, requestID, emails)
+   # sendEmail(ECRFolder, requestID, emails)
    return ECRFile
 
 def getEmails(dfIn):
