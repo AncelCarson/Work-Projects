@@ -174,7 +174,7 @@ def createFile(requestID, userCode, emails):
       print("OS Error: {0}".format(eer))
       print("A File was not created.")
       return
-   # sendEmail(ECRFolder, requestID, emails)
+   sendEmail(ECRFolder, requestID, emails)
    return ECRFile
 
 def getEmails(dfIn):
