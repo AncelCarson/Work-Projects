@@ -1,12 +1,13 @@
+#pylint: disable = all,invalid-name,bad-indentation,non-ascii-name
 #-*- coding: utf-8 -*-
 
 # Author: Ancel Carson
-# Orginization: Napps Technology Comporation
+# Orginization: Napps Technology Corporation
 # Creation Date: 15/5/2023
-# Update Date: 16/9/2024
+# Update Date: 14/10/2024
 # RepSendEmail.py
 
-"""This Program sends out formatted emails to a list of sels reps with open jobs.
+"""This Program sends out formatted emails to a list of sales reps with open jobs.
 
 This program is to be run after running RepFollowupSheets.py. It reads the Email
 List sheet and sends 1 email per row. For each email, the body of text is changed
@@ -25,8 +26,8 @@ import ssl
 import os
 import glob
 import time
+import getpass
 import pandas as pd
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
 
@@ -34,11 +35,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-
-#Secret Variables
-load_dotenv()
-AEmail = os.getenv('AEmail')  #Saved User Email 
-APassW = os.getenv('APassW')  #Saved User Password 
 
 #Variables
 file_path = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
@@ -68,9 +64,9 @@ def sendEmail(emails):
    SERVER = "smtp.office365.com"
 
    server = smtplib.SMTP(host = SERVER, port = 587)
-   context = ssl.create_default_context()    
+   context = ssl.create_default_context()
    server.starttls(context=context)
-   server.login(AEmail, APassW)
+   email, password = userLogin(server)
 
    # Sets the time that the server connection was made
    connectTime = datetime.now()
@@ -131,9 +127,9 @@ def sendEmail(emails):
          # Send Email and login after timeout
          try:
             server.sendmail(FROM, TO, msg.as_string())
-         except SMTPRecipientsRefused:
+         except smtplib.SMTPRecipientsRefused:
             print("Connection Timed Out. Reconnecting...")
-            server.login(AEmail, APassW)
+            server.login(email, password)
             print("Connection Restored")
             connectTime = datetime.now()
             server.sendmail(FROM, TO, msg.as_string())
@@ -150,7 +146,7 @@ def sendEmail(emails):
       # Checks if the connection has been running for more than 9 minutes and reconnected if it has
       # This is to prevent the 10 minute timeout
       if datetime.now() - connectTime >= timedelta(minutes=9):
-         server.login(AEmail, APassW)
+         server.login(email, password)
          connectTime = datetime.now()
          print("Connection Reset")
 
@@ -263,6 +259,24 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       signature = PrestonNapps
 
    return body + signature
+
+def userLogin(server):
+   email = input("What is your Napps Email?\n")
+   password = getpass.getpass("What is your password? (this will not be saved)\n")
+   try:
+      server.login(email, password)
+   except smtplib.SMTPAuthenticationError:
+      print("\n!----------------------------!")
+      print("Password entered is incorrect.")
+      password = input("Please enter the email password for {}?\n".format(email))
+      try:
+         server.login(email, password)
+      except smtplib.SMTPAuthenticationError:
+         print("\n!----------------------------!")
+         print("Password entered is incorrect again")
+         print("Please re-enter your email and try again.")
+         userLogin(server)
+   return [email,password]
 
 if __name__ == "__main__":
    main()
