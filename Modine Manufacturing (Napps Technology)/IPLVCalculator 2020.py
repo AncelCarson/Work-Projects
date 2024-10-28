@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# pylint: disable=invalid-name,bad-indentation
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 6/22/2022
@@ -54,7 +57,7 @@ def main():
    printResults(calcTable, runTable, unitInfo)
 
 
-def startingQuestions() -> list: 
+def startingQuestions() -> list:
    """Collects data to set up slelction.
 
    Asks a series of questions to gather information on the unit being run.
@@ -256,7 +259,7 @@ def fanTable():
    Returns:
       fanDf: Dataframe containing all fan power options.
    """
-   
+
    fanDf = pd.DataFrame({'ACCSize':['orange','orange','green','green','green','green','blue','blue','blue','blue','blue','blue'],
                              'Volt':[208,460,208,208,460,460,208,208,208,460,460,460],
                              'Fans':[1,1,1,2,1,2,2,3,4,2,3,4],
@@ -327,12 +330,12 @@ def runCalc(unitInfo:list, fanKW:list, waterTemp:list, dbTemp:list) -> list:
    percentRange = [1,.75,.75,.50,.50,.25,.25]
    if unitInfo[4] == 'singles':
       compCount = [2,2,0,1,0,1,0] # Singles only need convergences on step 1 and 3
-   
+
    # Each step requires a different number of compressors.
    # The following handles the output to describe which
-   # compressors to use. It then runs the convergence. 
+   # compressors to use. It then runs the convergence.
    for step in stepRange:
-      if (step == 0):
+      if step == 0:
          fullCap = capacityCalc(step, fullCap, fanKW, runTable, compCount, unitInfo)
          flow = float(input("What is Flow2 through the Evap?\n"))
          gpm = flow / 500.72
@@ -341,11 +344,11 @@ def runCalc(unitInfo:list, fanKW:list, waterTemp:list, dbTemp:list) -> list:
          capacityCalc(step, fullCap, fanKW, runTable, compCount, unitInfo)
          tempPercent = runTable[step][0] # Percent Load
          percentDiff = tempPercent - percentRange[step]
-         if (abs(percentDiff) <= .02):
+         if abs(percentDiff) <= .02:
             runTable[step][5] = 2
             runTable[step + 1] = runTable[step]
          else:
-            if (abs(percentDiff) > 0):
+            if abs(percentDiff) > 0:
                compCount[step+1] = compCount[step] - 1
                if compCount[step+1] == 0:
                   compCount[step+1] = 1
@@ -358,7 +361,7 @@ def runCalc(unitInfo:list, fanKW:list, waterTemp:list, dbTemp:list) -> list:
                capacityCalc(step+1, fullCap, fanKW, runTable, compCount, unitInfo)
       else:
          continue
-         
+
    return runTable
 
 
@@ -405,7 +408,7 @@ def tonCalc(compQs:list) -> list:
       Qactual, Qcond, and Win in Tons to be used in the rest of the program.
       The values are kept in a 1x3 list.
    """
-   
+
    compCalc = [0,0,0]
    compCalc[0] = compQs[0]/12000.0
    compCalc[1] = compQs[1]/12000.0
@@ -432,7 +435,7 @@ def fillTable(step:int, fanKW:list, compCalc:list, percentLoad:float, compCount:
 
       [% Load, EDB, Capacity, Power, Efficiency]
    """
-   
+
    runRow = [0,0,0,0,0,0]
    runRow[0] = percentLoad   # Actual Percent of Full Load
    runRow[2] = compCalc[0]         # Unit Capacity
@@ -527,7 +530,7 @@ def printResults(calcTable:list, runTable:list, unitInfo:list):
       runTable: The Raw data pulled from the Convergence and fan DataFrame
       unitInfo: Description of the unit
    """
-   
+
    print("Results for {} Ton {} Volt Unit\n".format(unitInfo[0],unitInfo[3]))
    print('Predicted Performance:\n\t% Load\tEDB\tCap.\tPower\tEfficiency')
    for row in runTable:
