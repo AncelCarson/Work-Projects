@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 2/3/2021
@@ -53,7 +56,7 @@ class GetDrawings:
       dfOut = dfOut.query('Unit == @self.type')
       self.tons = tonsMenu(dfOut['Tonage'].unique())
       dfOut = dfOut.query('Tonage == @self.tons').copy()
-      dfOut['SubUnit'].fillna(value="None", inplace=True)
+      dfOut.fillna({'SubUnit':"None"}, inplace=True)
       self.sub = subMenu(dfOut['SubUnit'].unique())
 
    def collect(self):
@@ -62,7 +65,7 @@ class GetDrawings:
       print(dfOut)
       dfOut = dfOut.query('Tonage == @self.tons').copy()
       print(dfOut)
-      dfOut['SubUnit'].fillna(value="None", inplace=True)
+      dfOut.fillna({'SubUnit':"None"}, inplace=True)
       print(dfOut)
       dfOut = dfOut.query('SubUnit == @self.sub')
       print(dfOut)

@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 9/5/2023
-# Update Date: 18/12/2023
+# Update Date: 28/10/2024
 # MakeEmailList.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -31,7 +34,7 @@ from Loader import Loader
 file_path = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
 files = sorted(glob.iglob(file_path), key=os.path.getctime, reverse=True)
 latest_file = files[0]
-checkFile = files[4] 
+checkFile = files[4]
 state_File = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Company State.xlsx'
 rep_File = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Rep State.xlsx'
 locale.setlocale( locale.LC_ALL, '' )
@@ -55,10 +58,10 @@ def main():
    dfIn["ReminderDays"] = dfIn.apply(lambda x: 1000 if pd.isna(x["ReminderStartDate"]) else int((datetime.now() - x["ReminderStartDate"]).days), axis = 1)
    dfIn["First Name"] = dfIn.apply(lambda x: str(x["Salesperson"]).split(" ")[0], axis = 1)
    dfIn["Dollars"] = dfIn.apply(lambda x: locale.currency(x["Total Quote"], grouping=True ), axis = 1)
-   dfIn["CUSTOMER_REFERENCE"].fillna("Chiller Quote", inplace=True)
-   dfIn["EmailAddress"].fillna("No Email", inplace=True)
-   dfIn["First Name"].fillna("", inplace=True)
-                  
+   dfIn.fillna({'CUSTOMER_REFERENCE':"Chiller Quote"}, inplace=True)
+   dfIn.fillna({'EmailAddress':"No Email"}, inplace=True)
+   dfIn.fillna({'First Name':""}, inplace=True)
+
    quotesList = dfIn[["SalesOrderNo","QuoteNum","OrderDate","DaysLate","Status","Cancel\nReasonCode","First Name","EmailAddress","SalespersonName","SalesOffice","State","CUSTOMER_REFERENCE","COMMENTS","Dollars","Total Quote","MemoDate","ReminderStartDate","MemoDays","ReminderDays"]].copy()
    quotesList["CurrentStatus"] = ""
    quotesList["QuotetoClose"] = ""
