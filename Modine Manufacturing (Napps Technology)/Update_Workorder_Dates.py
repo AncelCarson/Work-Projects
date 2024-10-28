@@ -25,6 +25,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 #custom Modules
 sys.path.insert(0,r'S:\Programs\Add_ins')
 from Loader import Loader
+from MenuMaker import makeMenu
 
 #Variables
 GEMBA_path = r'S:\GEMBA Board\*.xlsx' # * means all if need specific format then *.xlsx
@@ -37,8 +38,14 @@ def main():
    """Loads in most revent files and generates new one with the combined data"""
    loader = Loader("Loading GEMBA Files...", "GEMBA Files Loaded", 0.1).start()
    GEMBAs = sorted(glob.iglob(GEMBA_path), key=os.path.getmtime, reverse=True)
-   latest_GEMBA = GEMBAs[0]
    loader.stop()
+
+   filenamelist = []
+   for file in GEMBAs[:5]:
+      filenamelist.append(file.split("\\")[-1:][0])
+   makeMenu("Readable Files", filenamelist)
+   select = int(input("Select the File you would like to read\n"))
+   latest_GEMBA = GEMBAs[select -1]
 
    file = fileCheck(latest_GEMBA)
    if file == 0:
