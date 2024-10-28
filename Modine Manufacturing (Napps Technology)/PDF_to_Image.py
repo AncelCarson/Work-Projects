@@ -24,8 +24,8 @@ import fitz
 sys.path.insert(0,r'S:\Programs\Add_ins')
 
 #Variables
-source_path = r'S:\Ancel\Projects\19. JESS\Drawings PDF\*.PDF' # * means all if need specific format then *.PDF
-dest_path = r'S:\Ancel\Projects\19. JESS\Drawings PNG'
+source_path = r'U:\JESS Drawings\PDFs\*.pdf' # * means all if need specific format then *.PDF
+dest_path = r'U:\JESS Drawings\PNGs'
 
 #Functions
 " Main Finction "
@@ -33,9 +33,9 @@ def main():
    files = glob.glob(source_path)
    for file in files:
       doc = fitz.open(file)
-      name = file.split("\\")[5].split(".")[0]
+      name = file.split("\\")[3].split(".")[0]
       
-      for i, page in enumerate(doc):
+      for _, page in enumerate(doc):
          pix = page.get_pixmap()  # render page to an image
          pix.save(dest_path + "\\" + name + ".png")
       # image.save()
