@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 2/3/2021
-# Update Date: 17/4/2024
+# Update Date: 29/10/2024
 # GetDrawings.py
 
 #Libraries
@@ -79,13 +79,13 @@ class GetDrawings:
 
    def copy(self):
       wo = self.wo
-      path = "S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
+      path = r"S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
       # path = "U:\_Programs\Python\File Drop Test\Job " + wo + "*"
       files = glob.glob(path)
       if len(files) > 0:
-         filelocation = files[0] + "\Drawings - Mechanical"
+         filelocation = files[0] + r"\Drawings - Mechanical"
       else:
-         filelocation = "S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "\Drawings - Mechanical"
+         filelocation = r"S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + r"\Drawings - Mechanical"
       if len(self.drawingList) == 0:
          print("There are no drawing on file for this unit\n")
          return
@@ -146,7 +146,7 @@ def subMenu(subs):
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
-   fileLocation = 'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
+   fileLocation = r'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
    if len(glob.glob(fileLocation)) > 0:
       fileLocation = sorted(glob.iglob(fileLocation), key=os.path.getctime, reverse=True)[0]
    else:
