@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 27/8/24
+# Update Date: 13/11/24
 # Start.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -23,12 +26,11 @@ sys.path.insert(0,r'S:\Programs\Add_ins')
 #Variables
 
 #Functions
-" Main Finction "
 def main():
+   """Prints "Hello World" to the terminal"""
    print("Hello World")
    input("Press ENTER to close window...")
 
-" Checks if this program is being called "
 if __name__ == "__main__":
    main()
    input("Program completed. Press ENTER to close...")
