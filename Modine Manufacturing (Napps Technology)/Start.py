@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 13/11/24
+# Update Date: 2/12/24
 # Start.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -23,7 +23,9 @@ import sys
 from dotenv import load_dotenv
 
 #custom Modules
+#pylint: disable=wrong-import-position
 sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: enable=wrong-import-position
 
 #Secret Variables
 load_dotenv()

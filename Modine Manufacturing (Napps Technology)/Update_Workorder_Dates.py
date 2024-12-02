@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 22/7/24
-# Update Date: 10/9/24
+# Update Date: 2/12/24
 # Update_Workorder_Dates.py
 
 """Creates a csv file with most recent prodiction start dates for all open Work Orders.
@@ -23,14 +26,18 @@ import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 
 #custom Modules
+#pylint: disable=wrong-import-position
 sys.path.insert(0,r'S:\Programs\Add_ins')
 from Loader import Loader
 from MenuMaker import makeMenu
+#pylint: enable=wrong-import-position
 
 #Variables
 GEMBA_path = r'S:\GEMBA Board\*.xlsx' # * means all if need specific format then *.xlsx
-WorkOrder_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders.csv'
-WorkOrderImport_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders Update.csv'
+WorkOrder_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, \
+   Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders.csv'
+WorkOrderImport_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, \
+   Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders Update.csv'
 
 #Functions
 " Main Finction "
@@ -43,7 +50,7 @@ def main():
    filenamelist = []
    for file in GEMBAs[:5]:
       filenamelist.append(file.split("\\")[-1:][0])
-   makeMenu("Readable Files", filenamelist)
+   makeMenu("Recent Readable Files", filenamelist)
    select = int(input("Select the File you would like to read\n"))
    latest_GEMBA = GEMBAs[select -1]
 
@@ -59,7 +66,9 @@ def main():
    loader.stop()
 
    loader = Loader("Loading Work Order Tables...", "Work Order Tables Loaded", 0.1).start()
-   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE", "WO_DUE_DATE", "SCHED_REL_DATE", "LAST_RESCH_DATE", "PRIOR_DUE_DATE", "TRAVELR_PRINTED"])
+   dfWO = pd.read_csv(WorkOrder_path, names = ["WORK_ORDER", "WO_STATUS", "EFFECTIVE_DATE",
+                                               "WO_DUE_DATE", "SCHED_REL_DATE", "LAST_RESCH_DATE", 
+                                               "PRIOR_DUE_DATE", "TRAVELR_PRINTED"])
    loader.stop()
 
    loader = Loader("Formatting Data...", "Data Formatted", 0.1).start()
@@ -69,16 +78,19 @@ def main():
    workOrderDates = dfIn[["Work Order#", "Production \nStart \nDate"]]
    workOrderDates.sort_values(by = ["Production \nStart \nDate"], inplace = True)
    workOrderDates["Work Order#"] = workOrderDates.apply(lambda x: x["Work Order#"][:7], axis = 1)
-   workOrderDates["Production \nStart \nDate"] = workOrderDates.apply(lambda x: x["Production \nStart \nDate"].strftime('%m%d%Y'), axis = 1)
+   workOrderDates["Production \nStart \nDate"] = workOrderDates.apply(lambda x:
+                x["Production \nStart \nDate"].strftime('%m%d%Y'), axis = 1)
    workOrderDates.reset_index(drop = True, inplace = True)
    loader.stop()
 
-   for index, order in dfWO.iterrows():
+   for _, order in dfWO.iterrows():
       workOrder = order.WORK_ORDER
-      if not workOrderDates[workOrderDates["Work Order#"] == workOrder]["Production \nStart \nDate"].empty:
-         newDate = str(workOrderDates[workOrderDates["Work Order#"] == workOrder]["Production \nStart \nDate"].values[0])
+      if not workOrderDates[workOrderDates["Work Order#"] ==
+                            workOrder]["Production \nStart \nDate"].empty:
+         newDate = str(workOrderDates[workOrderDates["Work Order#"] ==
+                                      workOrder]["Production \nStart \nDate"].values[0])
       else:
-         print("Work Order {} is missing in GEMBA".format(workOrder))
+         print(f"Work Order {workOrder} is missing in GEMBA")
          continue
       order.EFFECTIVE_DATE = newDate
       order.WO_DUE_DATE = newDate
@@ -88,7 +100,7 @@ def main():
 
       if order.TRAVELR_PRINTED == " ":
          order.TRAVELR_PRINTED = "N"
-   
+
    dfWO.to_csv(WorkOrderImport_path)
 
 def fileCheck(logFile):
@@ -101,18 +113,17 @@ def fileCheck(logFile):
       file (file): Specified file with read permissions
    """
    try:
-      file = open(logFile,"r")
+      file = open(logFile,"r",encoding="utf-8")
    except PermissionError as err:
-      print("Permission Error: {0}".format(err))
+      print(f"Permission Error: {err}")
       print("The file is open by another user")
       print("Opening Log File...")
       os.startfile(logFile)
       print("Ask user to close the Log file then run the program again")
       input('Program Terminating. Press ENTER to Close...')
-      return 0 
+      return 0
    return file
 
-" Checks if this program is being called "
 if __name__ == "__main__":
    main()
    input('Program Completed. Press ENTER to Close...')
