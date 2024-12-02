@@ -25,9 +25,11 @@ from dotenv import load_dotenv
 #custom Modules
 sys.path.insert(0,r'S:\Programs\Add_ins')
 
-#Variables
+#Secret Variables
 load_dotenv()
 Shared_Drive = os.getenv('Shared_Drive')
+
+#Variables
 
 #Functions
 def main():
