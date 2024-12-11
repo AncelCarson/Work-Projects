@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Corporation
 # Creation Date: 15/5/2023
-# Update Date: 14/10/2024
+# Update Date: 11/122024
 # RepSendEmail.py
 
 """This Program sends out formatted emails to a list of sales reps with open jobs.
@@ -28,6 +28,7 @@ import glob
 import time
 import getpass
 import pandas as pd
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
 
@@ -36,8 +37,14 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+
 #Variables
-file_path = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
+file_path = fr'\\{Shared_Drive}\NTC Books of Knowledge'\
+   r'\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)'\
+   r'\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
 files = sorted(glob.iglob(file_path), key=os.path.getctime, reverse=True)
 inputWorkbook = files[0]
 
@@ -76,12 +83,12 @@ def sendEmail(emails):
    if test == "n" or test == "N":
       pass
    else:
-      emails = [["acarson@nappstech.com",'Napps','Napps Anas Test Chiller','1111','$32,566',95,'Anas','Napps',' for (1) 40Ton CGWR',False],
-               ["acarson@nappstech.com",'Jetson','Jetson Anas Test Chiller','1111','$41,041',56,'Anas','Jetson',' for (1) 40Ton ACCS',True],
-               ["acarson@nappstech.com",'Napps','Napps Preston Test Chiller','1111','$32,566',95,'Preston','Napps',' for (1) 40Ton CGWR',False],
-               ["acarson@nappstech.com",'Jetson','Jetson Preston Test Chiller','1111','$41,041',56,'Preston','Jetson',' for (1) 40Ton ACCS',True],
-               ["acarson@nappstech.com",'Napps','Napps General Test Chiller','1111','$32,566',95,'None','Napps',' for (1) 40Ton CGWR',False],
-               ["acarson@nappstech.com",'Jetson','Jetson General Test Chiller','1111','$41,041',56,'None','Jetson',' for (1) 40Ton ACCS',True],]
+      emails = [[email,'Napps','Napps Anas Test Chiller','1111','$32,566',95,'Anas','Napps',' for (1) 40Ton CGWR',False],
+               [email,'Jetson','Jetson Anas Test Chiller','1111','$41,041',56,'Anas','Jetson',' for (1) 40Ton ACCS',True],
+               [email,'Napps','Napps Preston Test Chiller','1111','$32,566',95,'Preston','Napps',' for (1) 40Ton CGWR',False],
+               [email,'Jetson','Jetson Preston Test Chiller','1111','$41,041',56,'Preston','Jetson',' for (1) 40Ton ACCS',True],
+               [email,'Napps','Napps General Test Chiller','1111','$32,566',95,'None','Napps',' for (1) 40Ton CGWR',False],
+               [email,'Jetson','Jetson General Test Chiller','1111','$41,041',56,'None','Jetson',' for (1) 40Ton ACCS',True],]
       emails = pd.DataFrame(emails, columns = ['EmailAddress','First Name','CUSTOMER_REFERENCE','QuoteNum','Dollars','DaysLate','Sender','Company','Units','Jetson'])
 
    # This test is intended to check that the program is reading the file correctly before sending emails.
@@ -268,7 +275,8 @@ def userLogin(server):
    except smtplib.SMTPAuthenticationError:
       print("\n!----------------------------!")
       print("Password entered is incorrect.")
-      password = input("Please enter the email password for {}?\n".format(email))
+      print("Please enter the email password for {}?".format(email))
+      password = input("(Password will show for reference but will still not be saved)\n")
       try:
          server.login(email, password)
       except smtplib.SMTPAuthenticationError:
