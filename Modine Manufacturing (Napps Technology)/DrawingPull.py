@@ -1,7 +1,10 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 2/3/2021
-# Update Date: 29/12/2022
+# Update Date: 4/2/2025
 # DrawingPull.py
 
 """Pulls in all drawings current for a Work order and adds them to the job file.
@@ -26,13 +29,20 @@ import os
 import sys
 import glob
 import pandas as pd
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
-drawingWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'#U:\_Programs\Python\Drawing Log.xlsx'
+drawingWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'#U:\_Programs\Python\Drawing Log.xlsx'
 
 #Functions
 " Main Finction "
@@ -44,13 +54,13 @@ def main():
 " Creates file path for job folder "
 def getWorkOrder():
    wo = input("Please enter the Work Order Number (ex: 4501A-01)\n")
-   path = "S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
+   path = f"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
    # path = "U:\_Programs\Python\File Drop Test\Job " + wo + "*"
    files = glob.glob(path)
    if len(files) > 0:
       filelocation = files[0] + "\Drawings - Mechanical"
    else:
-      filelocation = "S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "\Drawings - Mechanical"
+      filelocation = f"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "\Drawings - Mechanical"
       # filelocation = "U:\_Programs\Python\File Drop Test\Job " + wo + "\Drawings - Mechanical"
    return filelocation
 
@@ -131,7 +141,7 @@ def subMenu(subs):
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
-   fileLocation = 'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
+   fileLocation = f'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
    if len(glob.glob(fileLocation)) > 0:
       fileLocation = glob.glob(fileLocation)[0]
    else:

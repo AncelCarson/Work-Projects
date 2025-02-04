@@ -1,3 +1,4 @@
+#pylint: disable = all,invalid-name,bad-indentation,non-ascii-name
 #-*- coding: utf-8 -*-
 
 import smtplib
@@ -5,6 +6,7 @@ import ssl
 
 import os
 import time
+import getpass
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -17,12 +19,13 @@ from email import encoders
 load_dotenv()
 AEmail = os.getenv('AEmail')
 APassW = os.getenv('APassW')
+Shared_Drive = os.getenv('Shared_Drive')
 
-inputWorkbook = r'S:\Ancel\Pricing\Pricing Announcements\Job Followup 221117.xlsx'
+inputWorkbook = fr'\\{Shared_Drive}\Ancel\Pricing\Pricing Announcements\Job Followup 221117.xlsx'
 filename = "Jetson Lead Time and Price Adjust 230308.pdf"
-JetsonFile = r'S:\Ancel\Pricing\Pricing Announcements\Jetson Lead Time and Price Adjust 230308.pdf'
+JetsonFile = fr'\\{Shared_Drive}\Ancel\Pricing\Pricing Announcements\Jetson Lead Time and Price Adjust 230308.pdf'
 JetsonAttachment = open(JetsonFile, 'rb')
-# TraneFile = r'S:\Ancel\Sales\Job Followups\CGWR, CCAR and CICD Low Lead Times 220923.pdf'
+# TraneFile = fr'\\{Shared_Drive}\Ancel\Sales\Job Followups\CGWR, CCAR and CICD Low Lead Times 220923.pdf'
 # TraneAttachment = open(TraneFile, 'rb')
 
 def main():
@@ -43,7 +46,8 @@ def sendEmail(emails):
    server = smtplib.SMTP(host = SERVER, port = 587)
    context = ssl.create_default_context()    
    server.starttls(context=context)
-   server.login(AEmail, APassW)
+   email, password = userLogin(server)
+   server.login(email, password)
 
    # emails = [["acarson@nappstech.com",'Napps','Trane',False],
    #           ["acarson@nappstech.com",'Jetson','Independant',True],]
@@ -111,7 +115,7 @@ def sendEmail(emails):
       #    server.sendmail(FROM, TO, msg.as_string())
       # except SMTPRecipientsRefused:
       #    print("Connection Timed Out. Reconnecting...")
-      #    server.login(AEmail, APassW)
+      #    server.login(email, password)
       #    print("Connection Restored")
       #    server.sendmail(FROM, TO, msg.as_string())
 
@@ -213,6 +217,25 @@ def getMessage(name, email):
       signature = NappsSignature
 
    return body + signature
+
+def userLogin(server):
+   email = input("What is your Napps Email?\n")
+   password = getpass.getpass("What is your password? (this will not be saved)\n")
+   try:
+      server.login(email, password)
+   except smtplib.SMTPAuthenticationError:
+      print("\n!----------------------------!")
+      print("Password entered is incorrect.")
+      print("Please enter the email password for {}?".format(email))
+      password = input("(Password will show for reference but will still not be saved)\n")
+      try:
+         server.login(email, password)
+      except smtplib.SMTPAuthenticationError:
+         print("\n!----------------------------!")
+         print("Password entered is incorrect again")
+         print("Please re-enter your email and try again.")
+         userLogin(server)
+   return [email,password]
 
 if __name__ == "__main__":
    main()

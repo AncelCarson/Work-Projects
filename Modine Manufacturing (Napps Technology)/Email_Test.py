@@ -1,3 +1,6 @@
+#pylint: disable = all,invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
@@ -18,8 +21,9 @@ Functions:
 import smtplib
 import ssl
 
-import pandas as pd
 import time
+import getpass
+import pandas as pd
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -29,7 +33,7 @@ from email import encoders
 #Variables
 def main():
    email = input("Please enter the User Email:\n")
-   password = input("Please enter the User Password:\n")
+   password = getpass.getpass("Please enter the User Password:\n")
    sendEmail(email,password)
    input("Program complete. Press ENTER to Close...")
 
@@ -62,7 +66,7 @@ def sendEmail(email,password):
       print(err)
       return
 
-   TO = "acarson@nappstech.com"
+   TO = "ancel.h.carson@modine.com"
    FROM = email
    SUBJECT = "Test Email"
 

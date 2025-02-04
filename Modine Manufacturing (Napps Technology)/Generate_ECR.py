@@ -3,7 +3,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 1/10/2024
+# Update Date: 4/2/2025
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -192,7 +192,7 @@ def sendEmail(ECRFolder, requestID, emails):
    server.login(AEmail, APassW)
 
    TO = ", ".join(emails)
-   FROM = "techsupport@nappstech.com"
+   FROM = AEmail
    SUBJECT = "ECR #{0}".format(requestID)
 
    text = """

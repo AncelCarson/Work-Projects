@@ -1,7 +1,9 @@
+# pylint: disable=all
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 27/8/2024
-# Update Date: 27/8/2024
+# Update Date: 4/2/2025
 # Summarize_ECR.py
 
 """Summarizes open ECRs into a single table for quick status Updates.
@@ -20,15 +22,22 @@ import sys
 import glob
 import pandas as pd
 import openpyxl as pyxl
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
-summary_sheet = r'S:\Engineering Change Requests (ECR)\Change Requests\ECR Summary.xlsx'
+summary_sheet = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\ECR Summary.xlsx'
 loader = Loader("Collecting Open ECRs...", "ECRs Collected", 0.1).start()
-list_of_files = glob.glob(r'S:\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request *\Engineering Change Request *.xlsx') # * means all if need specific format then *.xlsx
+list_of_files = glob.glob(fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\Engineering Change Request *\Engineering Change Request *.xlsx') # * means all if need specific format then *.xlsx
 loader.stop()
 
 #Functions

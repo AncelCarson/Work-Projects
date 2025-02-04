@@ -1,27 +1,37 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/6/2022
-# Update Date: 30/6/2022
+# Update Date: 4/2/2025
 # ACCDrawingLogMaintenance.py: Will categorize all drawings in excel workbook
 #       by type
 
 #Libraries
+import os
+import sys
+import glob
 import pandas as pd
 import openpyxl as pyxl
-import os
-import glob
-import sys
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
 dfs = []
 # inputWorkbook = 'Drawing Log.xlsx'
 # outputWorkbook = 'Drawings by Unit.xlsx'
-inputWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\ACC Drawing Log.xlsx'
-outputWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\ACC Drawings by Size.xlsx'
+inputWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\ACC Drawing Log.xlsx'
+outputWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\ACC Drawings by Size.xlsx'
 worksheets = ['10 Ton','15 Ton','20 Ton','25 Ton','30 Ton','40 Ton','50 Ton','55 Ton','60 Ton','70 Ton','80 Ton']
 writer = pd.ExcelWriter(outputWorkbook)
 
@@ -53,11 +63,11 @@ def main():
       if len(dfs[num]) == 0:
          continue
       dfp.to_excel(writer, sheet_name=worksheets[num])
-   writer.save()
+   writer.close()
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
-   fileLocation = 'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
+   fileLocation = f'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
    if len(glob.glob(fileLocation)) > 0:
       fileLocation = glob.glob(fileLocation)[0]
       drawing = '=HYPERLINK("{}", "{}")'.format(fileLocation, drawing)

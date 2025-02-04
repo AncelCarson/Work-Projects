@@ -1,22 +1,30 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 15/12/2020
-# Update Date: 31/5/2024
+# Update Date: 4/2/2025
 # DrawingLogMaintenance.py: Will categorize all drawings in excel workbook
 #       by type
 
 #Libraries
-import pandas as pd
-import openpyxl as pyxl
 import os
 import glob
+import pandas as pd
+import openpyxl as pyxl
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #Variables
 dfs = []
 # inputWorkbook = 'Drawing Log.xlsx'
 # outputWorkbook = 'Drawings by Unit.xlsx'
-inputWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'
-outputWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawings by Unit.xlsx'
+inputWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'
+outputWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawings by Unit.xlsx'
 worksheets = ['ACCS','ACCM','CCAR','CGWR','FWCD','NWCR','SWU','WCCU']
 writer = pd.ExcelWriter(outputWorkbook)
 
@@ -50,7 +58,7 @@ def main():
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
-   fileLocation = 'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
+   fileLocation = f'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
    if len(glob.glob(fileLocation)) > 0:
       fileLocation = glob.glob(fileLocation)[0]
       drawing = '=HYPERLINK("{}", "{}")'.format(fileLocation, drawing)

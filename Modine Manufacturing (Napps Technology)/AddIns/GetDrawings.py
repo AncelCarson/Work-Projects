@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 2/3/2021
-# Update Date: 29/10/2024
+# Update Date: 4/2/2025
 # GetDrawings.py
 
 #Libraries
@@ -12,14 +12,21 @@ import os
 import sys
 import glob
 import pandas as pd
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Ancel\Python_Modules\AdIns')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Ancel\Python_Modules\AdIns')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 class GetDrawings:
 
-   drawingWorkbook = r'S:\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'
+   drawingWorkbook = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Drawing Logs\Drawing Log.xlsx'
 
    def __init__(self, wo='1111A-01', type='FWCD', tons=45, sub='DCST'):
       """Pulls in all drawings current for a Work order and adds them to the job file.
@@ -79,13 +86,13 @@ class GetDrawings:
 
    def copy(self):
       wo = self.wo
-      path = r"S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
+      path = fr"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + "*"
       # path = "U:\_Programs\Python\File Drop Test\Job " + wo + "*"
       files = glob.glob(path)
       if len(files) > 0:
          filelocation = files[0] + r"\Drawings - Mechanical"
       else:
-         filelocation = r"S:\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + r"\Drawings - Mechanical"
+         filelocation = fr"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job " + wo + r"\Drawings - Mechanical"
       if len(self.drawingList) == 0:
          print("There are no drawing on file for this unit\n")
          return
@@ -146,7 +153,7 @@ def subMenu(subs):
 
 " Grabs hyperlink of the first file matching the drawing name "
 def hyperlink(drawing):
-   fileLocation = r'S:\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
+   fileLocation = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\\'+drawing+'*'
    if len(glob.glob(fileLocation)) > 0:
       fileLocation = sorted(glob.iglob(fileLocation), key=os.path.getctime, reverse=True)[0]
    else:

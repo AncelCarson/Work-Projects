@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 12/10/2021
-# Update Date: 12/10/2021
+# Update Date: 4/2/2025
 # JetsonChime.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -15,10 +18,16 @@ Functions:
    main: Driver of the program
 """
 #Libraries
+import os
+from dotenv import load_dotenv
 from playsound import playsound
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+
 #Variables
-wavChime = r'S:\\Ancel\\Python_Modules\\AdIns\\Resources\\jetson.wav'
+wavChime = fr'\\{Shared_Drive}\\Ancel\\Python_Modules\\AdIns\\Resources\\jetson.wav'
 
 #Functions
 " Main Finction "

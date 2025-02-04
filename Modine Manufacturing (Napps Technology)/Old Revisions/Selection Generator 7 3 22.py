@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation,all
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 7/3/2022
+# Update Date: 4/2/2025
 # Selection Generator.py
 
 #Libraries
@@ -11,15 +14,21 @@ import copy
 import pandas as pd
 import openpyxl as pyxl
 from datetime import datetime
+from dotenv import load_dotenv
 from openpyxl.worksheet.datavalidation import DataValidation as DV
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+Drawing_Drive = os.getenv('Drawing_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Ancel\Python_Modules\AdIns')
+sys.path.insert(0,fr'\\{Drawing_Drive}\Ancel\Python_Modules\AdIns')
 from Loader import Loader
 
 #Variables
-startFile = r'I:\Engineering\Performance Software\_JESS Output Format Test.xlsx'
-repTable = r'I:\Engineering\Performance Software\_Sales Reps.xlsx'
+startFile = fr'\\{Drawing_Drive}\Engineering\Performance Software\_JESS Output Format Test.xlsx'
+repTable = fr'\\{Drawing_Drive}\Engineering\Performance Software\_Sales Reps.xlsx'
 
 #Functions
 " Main Finction "
@@ -110,7 +119,7 @@ def addRep(rep, office, dfReps):
 
 def createFile(user, type, rep, name):
    filePath = []
-   userFolder = r'I:\Engineering\Performance Software' + '\\' + user + '\\'
+   userFolder = fr'\\{Drawing_Drive}\Engineering\Performance Software' + '\\' + user + '\\'
    fileName = ", ".join([type, rep, name])
    day = datetime.now().strftime('%y%m%d')
    folderName = day + "-" + fileName

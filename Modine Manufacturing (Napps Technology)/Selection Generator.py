@@ -1,28 +1,39 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 25/4/2023
+# Update Date: 4/2/2025
 # Selection Generator.py
 
 #Libraries
 import os
 import sys
 import copy
-from openpyxl import workbook
 import pandas as pd
 import openpyxl as pyxl
 from datetime import datetime
+from openpyxl import workbook
+from dotenv import load_dotenv
 from openpyxl.worksheet.datavalidation import DataValidation as DV
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+Drawing_Drive = os.getenv('Drawing_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
 from MenuMaker import makeMenu
+#pylint: enable=wrong-import-position
 
 #Variables
-userFile = r'I:\Engineering\Performance Software\Selection Users.txt'
-startFile = r'I:\Engineering\Performance Software\_JESS Output Format Test.xlsx'
-repTable = r'I:\Engineering\Performance Software\_Sales Reps.xlsx'
+userFile = fr'\\{Drawing_Drive}\Engineering\Performance Software\Selection Users.txt'
+startFile = fr'\\{Drawing_Drive}\Engineering\Performance Software\_JESS Output Format Test.xlsx'
+repTable = fr'\\{Drawing_Drive}\Engineering\Performance Software\_Sales Reps.xlsx'
 
 #Functions
 " Main Finction "

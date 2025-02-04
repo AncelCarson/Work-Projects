@@ -1,3 +1,4 @@
+#pylint: disable = all,invalid-name,bad-indentation,non-ascii-name
 #-*- coding: utf-8 -*-
 
 import smtplib
@@ -5,6 +6,7 @@ import ssl
 
 import os
 import time
+import getpass
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -15,10 +17,9 @@ from email import encoders
 
 #Secret Variables
 load_dotenv()
-AEmail = os.getenv('AEmail')
-APassW = os.getenv('APassW')
+Shared_Drive = os.getenv('Shared_Drive')
 
-inputWorkbook = r'S:\Ancel\Pricing\JESS Announcements\TA Email List_R5.xlsx'
+inputWorkbook = fr'\\{Shared_Drive}\Ancel\Pricing\JESS Announcements\TA Email List_R5.xlsx'
 
 def main():
    dfIn = pd.read_excel(inputWorkbook, sheet_name = 'Email List', header = 0)
@@ -39,7 +40,8 @@ def sendEmail(emails):
    server = smtplib.SMTP(host = SERVER, port = 587)
    context = ssl.create_default_context()    
    server.starttls(context=context)
-   server.login(AEmail, APassW)
+   email, password = userLogin(server)
+   server.login(email, password)
 
    # emails = [["acarson@nappstech.com",'Napps','Trane',False],
    #           ["acarson@nappstech.com",'Jetson','Independant',True],
@@ -173,6 +175,25 @@ def getMessage(name, region):
       signature = JetsonSignature
 
    return body + signature
+
+def userLogin(server):
+   email = input("What is your Napps Email?\n")
+   password = getpass.getpass("What is your password? (this will not be saved)\n")
+   try:
+      server.login(email, password)
+   except smtplib.SMTPAuthenticationError:
+      print("\n!----------------------------!")
+      print("Password entered is incorrect.")
+      print("Please enter the email password for {}?".format(email))
+      password = input("(Password will show for reference but will still not be saved)\n")
+      try:
+         server.login(email, password)
+      except smtplib.SMTPAuthenticationError:
+         print("\n!----------------------------!")
+         print("Password entered is incorrect again")
+         print("Please re-enter your email and try again.")
+         userLogin(server)
+   return [email,password]
 
 if __name__ == "__main__":
    main()

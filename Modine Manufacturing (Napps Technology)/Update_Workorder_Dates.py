@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 22/7/24
-# Update Date: 2/12/24
+# Update Date: 4/2/2025
 # Update_Workorder_Dates.py
 
 """Creates a csv file with most recent prodiction start dates for all open Work Orders.
@@ -23,21 +23,26 @@ import os
 import sys
 import glob
 import pandas as pd
+from dotenv import load_dotenv
 pd.options.mode.chained_assignment = None  # default='warn'
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
 #pylint: disable=wrong-import-position
-sys.path.insert(0,r'S:\Programs\Add_ins')
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
 from MenuMaker import makeMenu
 #pylint: enable=wrong-import-position
 
 #Variables
-GEMBA_path = r'S:\GEMBA Board\*.xlsx' # * means all if need specific format then *.xlsx
-WorkOrder_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, \
-   Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders.csv'
-WorkOrderImport_path = r'S:\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, \
-   Shipping)\Instructions in Other Formats\Work Order Date Updates\Open Workorders Update.csv'
+GEMBA_path = fr'\\{Shared_Drive}\GEMBA Board\*.xlsx' # * means all if need specific format then *.xlsx
+WorkOrder_path = fr'\\{Shared_Drive}\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)' \
+   r'\Instructions in Other Formats\Work Order Date Updates\Open Workorders.csv'
+WorkOrderImport_path = fr'\\{Shared_Drive}\NTC Books of Knowledge\Supply Chain (Purchasing, Receiving, Warehouse, Shipping)' \
+   r'\Instructions in Other Formats\Work Order Date Updates\Open Workorders Update.csv'
 
 #Functions
 " Main Finction "

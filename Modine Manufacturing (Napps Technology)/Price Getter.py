@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 8/9/2021
+# Update Date: 4/2/2025
 # Price Getter.py
 # Rev 1
 
@@ -16,24 +19,32 @@ Functions:
    main: Driver of the program
 """
 #Libraries
+import os
 import sys
 import pandas as pd
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #variables
 folder = "2024 Q1.2"
 
 #Input Sheets
-costedfile = r'S:\Ancel\Pricing\{}\BM_CostedMaterials.xls'.format(folder)
-optionfile = r'S:\Ancel\Pricing\{}\sage bom options.xls'.format(folder)
-partfile = r'S:\Ancel\Pricing\{}\IM_PriceList.xls'.format(folder)
+costedfile = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\BM_CostedMaterials.xls'
+optionfile = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\sage bom options.xls'
+partfile = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\IM_PriceList.xls'
 
 #Output Sheets
-optionOut = r'S:\Ancel\Pricing\{}\option price out.xlsx'.format(folder)
-topOut = r'S:\Ancel\Pricing\{}\top price out.xlsx'.format(folder)
+optionOut = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\option price out.xlsx'
+topOut = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\top price out.xlsx'
 
 #Functions
 " Main Finction "

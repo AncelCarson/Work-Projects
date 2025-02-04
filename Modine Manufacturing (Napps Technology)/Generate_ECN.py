@@ -1,7 +1,10 @@
+#pylint: disable = all,invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 23/8/2022
-# Update Date: 21/11/2023
+# Update Date: 4/2/2025
 # Generate_ECN.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -23,18 +26,25 @@ import smtplib
 import pandas as pd
 import openpyxl as pyxl
 from datetime import datetime
+from dotenv import load_dotenv
 from win32com.client import Dispatch
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from MenuMaker import makeMenu
+#pylint: enable=wrong-import-position
 
 #Variables
-logFile = r'S:\Engineering Change Requests (ECR)\Change Notices\ECN Log 231108.xlsx'
-list_of_files = glob.glob(r'S:\Engineering Change Requests (ECR)\Engineering Change Notification Form*.xlsx') # * means all if need specific format then *.csv
+logFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\ECN Log 231108.xlsx'
+list_of_files = glob.glob(fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Engineering Change Notification Form*.xlsx') # * means all if need specific format then *.csv
 latest_file = max(list_of_files, key=os.path.getctime)
 
 #Functions
@@ -142,7 +152,7 @@ def getECR():
    selection = input('Is there an associated ECR with this Notification? Y/N\n')
    if selection == "y" or selection == "Y":
       ECRnum = input("What is the associated ECR #?\n")
-      return [ECRnum, r"S:\Engineering Change Requests (ECR)\Change Requests\Completed\Engineering Change Request {}".format(ECRnum)]
+      return [ECRnum, fr"\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\Completed\Engineering Change Request {ECRnum}"]
    elif selection == "n" or selection == "N":
       return ["N/A",0]
    else:
@@ -209,8 +219,8 @@ def createForm(requestID, user, priority, day, startDate, ECRnum, overview, depa
 
 def createFile(requestID):
    day = datetime.now().strftime('%y%m%d')
-   ECNFolder = 'S:\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}'.format(requestID)
-   ECNFile = 'S:\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}\Engineering Change Notification {0} {1}.xlsx'.format(requestID, day)
+   ECNFolder = f'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}'.format(requestID)
+   ECNFile = f'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}\Engineering Change Notification {0} {1}.xlsx'.format(requestID, day)
    try:
       os.system('mkdir "{}"'.format(ECNFolder))
       os.system('copy "{}" "{}"'.format(latest_file, ECNFile))

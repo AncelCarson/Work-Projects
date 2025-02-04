@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation,all
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 12/6/2024
+# Update Date: 4/2/2025
 # RepFollowupSheets.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -19,15 +22,21 @@ import os
 import sys
 import pandas as pd
 from datetime import datetime
+from dotenv import load_dotenv
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 import MakeEmailList as MEL
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
-start_folder = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Followup '
+start_folder = fr'\\{Shared_Drive}\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Followup '
 day = datetime.now().strftime('%y%m%d')
 folder = start_folder + day
 os.system('mkdir "{}"'.format(folder))

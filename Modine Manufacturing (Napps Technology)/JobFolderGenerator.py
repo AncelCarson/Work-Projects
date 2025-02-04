@@ -1,7 +1,10 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 22/5/23
-# Update Date: 31/7/24
+# Update Date: 4/2/25
 # JobFolderGenerator.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -18,18 +21,25 @@ Functions:
 import os
 import sys
 import glob
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from GetDrawings import GetDrawings
+#pylint: enable=wrong-import-position
 
 #Variables
-documentPath = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Documents\Order Process Sheets\\'
+documentPath = fr'\\{Shared_Drive}\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Documents\Order Process Sheets\\'
 standardSheet = r"Standard Order Process Checklist.xlsx"
 specialSheet = r"Design Special Order Process Checklist.xlsx"
 releaseName = r"_Job Release Checklist"
-jobsFolder = r'S:\_A NTC GENERAL FILES\_JOB FILES'
-quotesFolder = r'S:\_A NTC GENERAL FILES\_Quotes & Misc Info\QUOTES\Quotes *\**\Quote *.pdf'
+jobsFolder = fr'\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES'
+quotesFolder = fr'\\{Shared_Drive}\_A NTC GENERAL FILES\_Quotes & Misc Info\QUOTES\Quotes *\**\Quote *.pdf'
 subFolders = [r"\Config",r"\Drawings - Electrical",r"\Drawings - Mechanical",r"\Emails",r"\Pics",r"\Shortage Reports",r"\Submittal"]
 
 #Functions

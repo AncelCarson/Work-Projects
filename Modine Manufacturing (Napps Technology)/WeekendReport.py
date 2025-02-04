@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/2/2024
-# Update Date: 19/6/2024
+# Update Date: 4/2/2025
 # WeekendReport.py
 
 """This Program compiles a weeks worth of logs and generates a report.
@@ -26,9 +29,6 @@ import glob
 import pandas as pd
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta, MO, SU
-
-#custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
 
 #Variables
 # day_set = 1 ## Used when Running Past Weeks
@@ -134,7 +134,7 @@ def review_day(day_list):
    ooo = 0
    wfh = 0
    for num in range(len(day_list)):
-      if day_list[num][1] == "End Day" or day_list[num][1] == "End Week":
+      if day_list[num][1] in ["End Day","End Week","End Month","End Both"]:
          end_time = day_list[num][0]
          break
       day_list[num][1] = day_list[num][1][:-1]

@@ -1,3 +1,6 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 30/11/2023
@@ -21,17 +24,24 @@ import pandas as pd
 import openpyxl as pyxl
 import Generate_ECR as ECR
 from datetime import datetime
+from dotenv import load_dotenv
 from openpyxl.styles import NamedStyle, Font, Border, Side, Alignment
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
 from MenuMaker import makeMenu
+#pylint: enable=wrong-import-position
 
 #Variables.
 year = datetime.today().year
-logFile = r'S:\Engineering Change Requests (ECR)\Line Calls\Line Call Log {}.xlsx'.format(year)
-templateFile = r'S:\Engineering Change Requests (ECR)\Line Calls\Line Call Log Template.xlsx'
+logFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Line Calls\Line Call Log {year}.xlsx'
+templateFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Line Calls\Line Call Log Template.xlsx'
 
 #Functions
 " Main Finction "

@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/11/24
-# Update Date: 22/12/24
+# Update Date: 4/2/2025
 # Sort_Pipe_Files.py
 
 """Sorts Approved step files and simulated prt files into Approved for Use.
@@ -23,16 +23,16 @@ import glob
 import shutil
 from dotenv import load_dotenv
 
-#custom Modules
-#pylint: disable=wrong-import-position
-sys.path.insert(0,r'S:\Programs\Add_ins')
-from Loader import Loader
-#pylint: enable=wrong-import-position
-
 #Secret Variables
 load_dotenv()
 Shared_Drive = os.getenv('Shared_Drive')
 Drawing_Drive = os.getenv('Drawing_Drive')
+
+#custom Modules
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
+from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
 stepLocation = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Bent Pipe\STEP Files'

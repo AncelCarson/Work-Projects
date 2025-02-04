@@ -1,3 +1,6 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 7/5/2021
@@ -11,17 +14,25 @@ import copy
 import glob
 import pandas as pd
 import openpyxl as pyxl
+from dotenv import load_dotenv
 from openpyxl.worksheet.datavalidation import DataValidation as DV
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+Drawing_Drive = os.getenv('Drawing_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
 from MenuMaker import menu
 from GetDrawings import GetDrawings
+#pylint: enable=wrong-import-position
 
 class GetNameplate:
 
-   list_of_files = glob.glob(r'I:\Engineering\Nameplates\Name Plate Generator Rev *.xlsx') # * means all if need specific format then *.csv
+   list_of_files = glob.glob(fr'\\{Drawing_Drive}\Engineering\Nameplates\Name Plate Generator Rev *.xlsx') # * means all if need specific format then *.csv
    nameplateExcel = max(list_of_files, key=os.path.getctime)
 
    def __init__(self):

@@ -1,10 +1,10 @@
-# pylint: disable=invalid-name,bad-indentation
+# pylint: disable=invalid-name,bad-indentation,all
 # -*- coding: utf-8 -*-
 
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 9/5/2023
-# Update Date: 28/10/2024
+# Update Date: 4/2/2025
 # MakeEmailList.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -25,18 +25,25 @@ import time
 import locale
 import pandas as pd
 from datetime import datetime
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
 
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+#pylint: enable=wrong-import-position
 
 #Variables
-file_path = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
+file_path = fr'\\{Shared_Drive}\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Follow Up Data\*.xlsx' # * means all if need specific format then *.xlsx
 files = sorted(glob.iglob(file_path), key=os.path.getctime, reverse=True)
 latest_file = files[0]
 checkFile = files[4]
-state_File = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Company State.xlsx'
-rep_File = r'S:\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Rep State.xlsx'
+state_File = fr'\\{Shared_Drive}\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Company State.xlsx'
+rep_File = fr'\\{Shared_Drive}\NTC Books of Knowledge\Sales (Part and Unit Quotes, Customer Interactions, Pricing, Reports, Binders)\Job Followups\Regional Data\Rep State.xlsx'
 locale.setlocale( locale.LC_ALL, '' )
 
 #Functions
