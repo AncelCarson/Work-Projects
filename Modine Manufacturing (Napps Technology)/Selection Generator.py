@@ -118,7 +118,7 @@ def addRep(rep, office, dfReps):
 
 def createFile(user, type, rep, name):
    filePath = []
-   userFolder = r'I:\Engineering\Performance Software' + '\\' + user + '\\'
+   userFolder = fr'\\{Drawing_Drive}\Engineering\Performance Software' + '\\' + user + '\\'
    fileName = ", ".join([type, rep, name])
    day = datetime.now().strftime('%y%m%d')
    folderName = day + "-" + fileName
