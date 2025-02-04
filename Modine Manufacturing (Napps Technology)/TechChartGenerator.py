@@ -1,7 +1,10 @@
+#pylint: disable = invalid-name,bad-indentation,non-ascii-name
+#-*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 21/6/2022
-# Update Date: 7/9/2022
+# Update Date: 4/2/2025
 # TechChartGenerator.py
 # Rev: 1
 
@@ -20,27 +23,34 @@ import os
 import sys
 import numpy as np
 import pandas as pd
-from playsound import playsound
 from datetime import timedelta
+from dotenv import load_dotenv
+#from playsound import playsound
 import matplotlib.pyplot as plt
 
+#Secret Variables
+load_dotenv()
+Shared_Drive = os.getenv('Shared_Drive')
+
 #custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
-from JetsonChime import chime
+#pylint: disable=wrong-import-position
+sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
+#from JetsonChime import chime
 from MenuMaker import menu
 from MenuMaker import makeMenu
-from JetsonControl import logo
+#from JetsonControl import logo
+#pylint: enable=wrong-import-position
 
 
 #Variables
-chartFolder = r'S:\_NTC Technical Support Database\Chart Viewer\\'
-wavChime = r'S:\\Ancel\\Python_Modules\\AdIns\\Resources\\jetson.wav'
+chartFolder = fr'\\{Shared_Drive}\_NTC Technical Support Database\Chart Viewer\\'
+wavChime = fr'\\{Shared_Drive}\\Ancel\\Python_Modules\\AdIns\\Resources\\jetson.wav'
 
 #Functions
 " Main Finction "
 def main():
-   logo()
-   chime()
+   #logo()
+   #chime()
    filenamelist = []
    menuList = []
    showColumns = []
@@ -108,7 +118,8 @@ def main():
          input("Press enter to Continue...")
 
 def chime():
-   playsound(wavChime)
+   pass
+   #playsound(wavChime)
 
 def runSelect():
    menu(["Program Options","A: Make a chart","B: Find Runtime"])
