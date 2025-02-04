@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name,bad-indentation,import-outside-toplevel
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 27/9/23
@@ -25,9 +28,6 @@ import sys
 import glob
 from datetime import datetime
 
-#custom Modules
-sys.path.insert(0,r'S:\Programs\Add_ins')
-
 #Variables
 folder = r"U:\Daily Log\*" # * means all if need specific format then *.txt
 today = datetime.now().date()
@@ -37,7 +37,7 @@ fileDate = lambda x: datetime.fromtimestamp(os.path.getctime(x)).date()
 " Main Finction "
 def main():
    """Adds a task to the current day's log with with a time stamp"""
-   list_of_files = glob.glob(folder) 
+   list_of_files = glob.glob(folder)
    if len(list_of_files) == 0:
       latest_file = makeFile()
    else:
@@ -50,8 +50,16 @@ def main():
    logLine = "\n" + logTime + text
    with open(latest_file,"a") as f:
       f.write(logLine)
+   if text == "End Month":
+      import MonthReport
+      MonthReport.main()
    if text == "End Week":
       import WeekendReport
+      WeekendReport.main()
+   if text == "End Both":
+      import MonthReport
+      import WeekendReport
+      MonthReport.main()
       WeekendReport.main()
 
 def makeFile():
@@ -61,13 +69,13 @@ def makeFile():
       file (str): File path to the newly created log file
    """
    if not os.path.isdir(folder[:-2]):
-      os.system('mkdir "{}"'.format(folder[:-2]))
+      os.system(f'mkdir "{folder[:-2]}"')
    fileDay = datetime.now().strftime('%d/%m/%Y')
    fileTime = datetime.now().strftime('%H:%M')
    day = datetime.now().strftime('%y%m%d')
    file = folder[:-2] + "\\Log " + day + ".txt"
    with open(file,"x") as f:
-      f.write("Daily Log {0}\n{1}: Day Start".format(fileDay, fileTime))
+      f.write(f"Daily Log {fileDay}\n{fileTime}: Day Start")
    return file
 
 " Checks if this program is being called "
