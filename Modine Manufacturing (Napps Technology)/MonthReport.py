@@ -83,7 +83,7 @@ def main():
    days_home = sum(wfh)
    week_length = sum(week_stats[2])
    start_min = min(week_stats[0])
-   end_max = max(week_stats[1])
+   end_max = min(week_stats[1]) if min(week_stats[1]) < "06:00" else max(week_stats[1])
    lunch_average = sum(lunch)/len(lunch)
    week_review = review_week(week_tasks, week_stats)
 
@@ -150,6 +150,8 @@ def review_day(day_list):
       current_time = datetime.strptime(day_list[num][0], '%H:%M')
       next_time = datetime.strptime(day_list[num+1][0], '%H:%M')
       day_list[num][0] = (next_time - current_time).total_seconds()/3600
+      if day_list[num][0] < 0:
+         day_list[num][0] += 24
       if "/" in day_list[num][1]:
          split_task = day_list[num][1].split("/")
          for task in split_task:
