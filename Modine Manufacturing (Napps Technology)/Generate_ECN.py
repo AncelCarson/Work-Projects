@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 23/8/2022
-# Update Date: 4/2/2025
+# Update Date: 21/2/2025
 # Generate_ECN.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -219,8 +219,8 @@ def createForm(requestID, user, priority, day, startDate, ECRnum, overview, depa
 
 def createFile(requestID):
    day = datetime.now().strftime('%y%m%d')
-   ECNFolder = f'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}'.format(requestID)
-   ECNFile = f'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {0}\Engineering Change Notification {0} {1}.xlsx'.format(requestID, day)
+   ECNFolder = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {requestID}'
+   ECNFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Notices\Engineering Change Notification {requestID}\Engineering Change Notification {requestID} {day}.xlsx'
    try:
       os.system('mkdir "{}"'.format(ECNFolder))
       os.system('copy "{}" "{}"'.format(latest_file, ECNFile))
