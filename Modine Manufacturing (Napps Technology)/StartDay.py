@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name,bad-indentation
+# -*- coding: utf-8 -*-
+
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 12/7/2020
-# Update Date: 27/9/2023
+# Update Date: 13/3/2025
 # StartDay.py: Opens programs and sets up items for the day
 
 #Libraries
@@ -10,7 +13,7 @@ import glob
 from datetime import datetime
 
 #Variables
-folder = r"U:\Daily Log"
+folder = r"O:\Daily Log"
 
 #Functions
 " Main Finction "
@@ -21,13 +24,13 @@ def main():
       if file == 1:
          os.startfile(r'C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\SLDWORKS.exe')
       elif file == 2:
-         os.startfile(r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE')
+         os.startfile(r'C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE')
       elif file == 3:
-         list_of_files = glob.glob(r'S:\_Component Definitions\_ACCX Component Definition\*') # * means all if need specific format then *.csv
+         list_of_files = glob.glob(r'J:\_Component Definitions\_ACCX Component Definition\*') # * means all if need specific format then *.csv
          latest_file = max(list_of_files, key=os.path.getctime)
          os.startfile(latest_file)
       elif file == 4:
-         list_of_files = glob.glob(r'S:\GEMBA Board\*.xlsx') # * means all if need specific format then *.csv
+         list_of_files = glob.glob(r'J:\GEMBA Board\*.xlsx') # * means all if need specific format then *.csv
          latest_file = max(list_of_files, key=os.path.getctime)
          os.startfile(latest_file)
       elif file == 5:

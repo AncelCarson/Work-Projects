@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 27/9/23
-# Update Date: 14/6/24
+# Update Date: 13/3/25
 # WriteLog.py
 
 """Program logs an activity and the time that it was started.
@@ -29,7 +29,7 @@ import glob
 from datetime import datetime
 
 #Variables
-folder = r"U:\Daily Log\*" # * means all if need specific format then *.txt
+folder = r"O:\Daily Log\*" # * means all if need specific format then *.txt
 today = datetime.now().date()
 fileDate = lambda x: datetime.fromtimestamp(os.path.getctime(x)).date()
 
