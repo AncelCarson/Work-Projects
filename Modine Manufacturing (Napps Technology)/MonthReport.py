@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/2/2024
-# Update Date: 4/2/2025
+# Update Date: 20/3/2025
 # MonthReport.py
 
 """This Program compiles a month's worth of logs and generates a report.
@@ -41,8 +41,8 @@ sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 #pylint: enable=wrong-import-position
 
 #Variables
-input_folder = r"U:\Daily Log\*" # * means all if need specific format then *.txt
-output_folder = r"U:\Monthly Log"
+input_folder = r"O:\Daily Log\*" # * means all if need specific format then *.txt
+output_folder = r"O:\Monthly Log"
 today = date.today()
 # today = date.today() - timedelta(days = 1)
 file_day = today.strftime('%y%m%d')
@@ -178,6 +178,8 @@ def review_day(day_list):
    day_start = datetime.strptime(start_time, '%H:%M')
    day_end = datetime.strptime(end_time, '%H:%M')
    day_length = (day_end - day_start).total_seconds()/3600 - lunch - ooo
+   if day_length < 0:
+      day_length += 24
    return [item_list, start_time, end_time, day_length, task_change, lunch, wfh]
 
 def review_week(week_tasks, week_stats):
