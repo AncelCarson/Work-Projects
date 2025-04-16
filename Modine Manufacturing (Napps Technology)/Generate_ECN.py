@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 23/8/2022
-# Update Date: 21/2/2025
+# Update Date: 16/4/2025
 # Generate_ECN.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -23,6 +23,7 @@ import sys
 import ssl
 import glob
 import smtplib
+import getpass
 import pandas as pd
 import openpyxl as pyxl
 from datetime import datetime
@@ -173,7 +174,7 @@ def getDepartments(dfIn):
 def getUserPass(email):
    selection = input('Does an email notification need to be sent? Y/N\n')
    if selection == "y" or selection == "Y":
-      return input("Please enter the email password for {}?\n".format(email))
+      return getpass.getpass("Please enter the email password for {}?\n".format(email))
    elif selection == "n" or selection == "N":
       return None
    else:
@@ -241,7 +242,7 @@ def sendEmail(emailList, email, userPass, ECNfolder, requestID, overview, user):
    except smtplib.SMTPAuthenticationError:
       print("\n!----------------------------!")
       print("Password entered is incorrect.")
-      userPass = input("Please enter the email password for {}?\n".format(email))
+      userPass = getpass.getpass("Please enter the email password for {}?\n".format(email))
       sendEmail(emailList, email, userPass, ECNfolder, requestID, overview, user)
       return
 
