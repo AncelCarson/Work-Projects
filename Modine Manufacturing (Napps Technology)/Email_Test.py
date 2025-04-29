@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 2/3/2021
+# Update Date: 4/29/2025
 # Start.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -66,7 +66,7 @@ def sendEmail(email,password):
       print(err)
       return
 
-   TO = "ancel.h.carson@modine.com"
+   TO = "ancel.h.carson@modine.com,acarson@nappstech.com"
    FROM = email
    SUBJECT = "Test Email"
 
@@ -75,12 +75,12 @@ def sendEmail(email,password):
    msg['From'] = FROM
    msg['To'] = TO
 
-   text = """<p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>This is a test message</p>"""
+   text = """<p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'>This is a test message. Let me know if you go it.</p>"""
 
    msg.attach(MIMEText(text, 'html'))
 
    try:
-      server.sendmail(FROM, TO, msg.as_string())
+      server.sendmail(FROM, TO.split(","), msg.as_string())
    except Exception as err:
       print(err)
       return

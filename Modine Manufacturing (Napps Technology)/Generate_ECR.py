@@ -3,7 +3,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 4/2/2025
+# Update Date: 4/29/2025
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -210,7 +210,7 @@ def sendEmail(ECRFolder, requestID, emails):
 
    msg.attach(MIMEText(text, 'html'))
 
-   server.sendmail(FROM, TO, msg.as_string())
+   server.sendmail(FROM, emails, msg.as_string())
    print(SUBJECT + " has been sent to the Engineering Manager")
 
 " Checks if this program is beiong called "
