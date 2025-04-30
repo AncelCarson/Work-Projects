@@ -3,7 +3,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 4/29/2025
+# Update Date: 4/30/2025
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -31,8 +31,6 @@ from email.mime.text import MIMEText
 
 #Secret Variables
 load_dotenv()
-AEmail = os.getenv('AEmail')
-APassW = os.getenv('APassW')
 Shared_Drive = os.getenv('Shared_Drive')
 
 #Variables
@@ -184,15 +182,14 @@ def getEmails(dfIn):
    return emails
 
 def sendEmail(ECRFolder, requestID, emails):
-   SERVER = "smtp.office365.com"
+   SERVER = "mail-na.modine.com"
 
-   server = smtplib.SMTP(host = SERVER, port = 587)
+   server = smtplib.SMTP(host = SERVER, port = 25)
    context = ssl.create_default_context()    
    server.starttls(context=context)
-   server.login(AEmail, APassW)
 
    TO = ", ".join(emails)
-   FROM = AEmail
+   FROM = "LONGTX-ECR-Notification@modine.com"
    SUBJECT = "ECR #{0}".format(requestID)
 
    text = """
