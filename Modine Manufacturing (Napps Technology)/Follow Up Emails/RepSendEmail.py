@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Corporation
 # Creation Date: 15/5/2023
-# Update Date: 11/122024
+# Update Date: 19/5/2025
 # RepSendEmail.py
 
 """This Program sends out formatted emails to a list of sales reps with open jobs.
@@ -104,9 +104,9 @@ def sendEmail(emails):
       TO = row['EmailAddress']
       note = row['Company']
       if row['Jetson']:
-         FROM = "sales@jetsonhvac.com"
+         FROM = "JetsonSales@modine.com"
       else:
-         FROM = "sales@nappstech.com"
+         FROM = "NappsTechSales@modine.com"
 
       if row['DaysLate'] >= 150:
          days = 150
@@ -200,7 +200,7 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Modine Manufacturing Company</span></strong></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>P:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:903-758-2900"><span style="color:#0563C1;">903-758-2900 Ext. 145</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="http://www.jetsonhvac.com/"><span style="color:#0563C1;">www.JetsonHVAC.com</span></a></span></p>
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:Sales@JetsonHVAC.com"><span style="color:#0563C1;">Sales@JetsonHVAC.com</span></a></span></u></p>
+      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:JetsonSales@modine.com"><span style="color:#0563C1;">JetsonSales@modine.com</span></a></span></u></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
    AnasJetson = """
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Anas Shahid</span></strong></p>
@@ -208,7 +208,7 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Modine Manufacturing Company</span></strong></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>P:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:903-758-2900"><span style="color:#0563C1;">903-758-2900 Ext. 142</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="http://www.jetsonhvac.com/"><span style="color:#0563C1;">www.JetsonHVAC.com</span></a></span></p>
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:Sales@JetsonHVAC.com"><span style="color:#0563C1;">Sales@JetsonHVAC.com</span></a></span></u></p>
+      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:JetsonSales@modine.com"><span style="color:#0563C1;">JetsonSales@modine.com</span></a></span></u></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
    JetsonSignature = """
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Jetson Sales Team</span></strong></p>
@@ -216,7 +216,7 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>Modine Manufacturing Company</span></strong></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Arial",sans-serif;color:#003764;'>P:</span></strong><span style="font-size:13px;color:#44546A;">&nbsp;</span><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="tel:903-758-2900"><span style="color:#0563C1;">903-758-2900</span></a></span></p>
       <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'><a href="http://www.jetsonhvac.com/"><span style="color:#0563C1;">www.JetsonHVAC.com</span></a></span></p>
-      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:Sales@JetsonHVAC.com"><span style="color:#0563C1;">Sales@JetsonHVAC.com</span></a></span></u></p>
+      <p style='margin:0in;margin-bottom:.0001pt;font-size:15px;font-family:"Calibri",sans-serif;'><span style='font-size:13px;font-family:"Arial",sans-serif;'>Email:</span><span style='font-size:13px;font-family:"Arial",sans-serif;color:red;'>&nbsp;</span><u><span style='font-size:13px;font-family:  "Arial",sans-serif;color:#0563C1;'><a href="mailto:JetsonSales@modine.com"><span style="color:#0563C1;">JetsonSales@modine.com</span></a></span></u></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
    PrestonNapps = """
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><strong>Preston Ware</strong></p>
@@ -226,7 +226,6 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Napps Technology Corporation</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>905 W. Cotton Street</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Longview, TX 75604</u></p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><span style="color:blue;text-decoration:underline;"><a href="www.nappstech.com">www.nappstech.com</a></span></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
    AnasNapps = """
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><strong>Anas Shahid</strong></p>
@@ -236,7 +235,6 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Napps Technology Corporation</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>905 W. Cotton Street</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Longview, TX 75604</u></p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><span style="color:blue;text-decoration:underline;"><a href="www.nappstech.com">www.nappstech.com</a></span></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
    NappsSignature = """
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><strong>Napps Sales Team</strong></p>
@@ -245,7 +243,6 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Napps Technology Corporation</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>905 W. Cotton Street</u></p>
       <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><u>Longview, TX 75604</u></p>
-      <p style='margin-top:0in;margin-right:0in;margin-bottom:.0001pt;margin-left:0in;font-size:16px;font-family:"Calibri",sans-serif;'><span style="color:blue;text-decoration:underline;"><a href="www.nappstech.com">www.nappstech.com</a></span></p>
       <p><span style="font-size: 6px;">{}</span></p>""".format(days)
 
    if Jetson:
@@ -268,7 +265,7 @@ def getMessage(name, job, quote, price, sender, units, Jetson, days):
    return body + signature
 
 def userLogin(server):
-   email = input("What is your Napps Email?\n")
+   email = input("What is your Modine Email?\n")
    password = getpass.getpass("What is your password? (this will not be saved)\n")
    try:
       server.login(email, password)
@@ -283,7 +280,7 @@ def userLogin(server):
          print("\n!----------------------------!")
          print("Password entered is incorrect again")
          print("Please re-enter your email and try again.")
-         userLogin(server)
+         email, password = userLogin(server)
    return [email,password]
 
 if __name__ == "__main__":
