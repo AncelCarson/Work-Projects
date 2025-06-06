@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 5/6/2025
-# Update Date: 5/6/2025
+# Update Date: 6/6/2025
 # Make_Bent_Pipe_Note.py
 
 """This program generates a list of cut lengths for a unit.
@@ -52,7 +52,8 @@ def main():
       return
    else:
       print("There are multiple files that fit match.")
-      print(folder for folder in files)
+      for folder in files:
+         print(folder)
       print("Please correct the folders or narrow your input")
       return
 
@@ -61,7 +62,7 @@ def main():
       print("There is not folder with the name Bent Pipe")
       print("Please rename the folder or add it")
       return
-   
+
    loader = Loader("Generating Pipe Note(s)...", "Note(s) generated\n", .1).start()
    allFlags = []
    for bendFolder in bendFolders:
@@ -73,7 +74,8 @@ def main():
 
    if len(allFlags) != 0:
       print("The following files had Lengths that did not match:")
-      print(flag for flag in allFlags)
+      for flag in allFlags:
+         print(flag)
       print("Check the pipe in Bend Pro and run this simulation again")
 
 def findFolder(folder) -> list:
@@ -118,7 +120,6 @@ def makeNote(lengths, folder) -> list:
 def to8th(num) -> float:
    """Rounds a value to the nearest 1/8"""
    return round(num * 8)/8
-
 
 if __name__ == "__main__":
    main()
