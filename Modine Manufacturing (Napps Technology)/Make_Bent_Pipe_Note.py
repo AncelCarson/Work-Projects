@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 5/6/2025
-# Update Date: 6/6/2025
+# Update Date: 9/7/2025
 # Make_Bent_Pipe_Note.py
 
 """This program generates a list of cut lengths for a unit.
@@ -23,21 +23,26 @@ Functions:
 #Libraries
 import os
 import sys
+from collections import defaultdict
+
 import glob
 from dotenv import load_dotenv
 
 #Secret Variables
 load_dotenv()
 Shared_Drive = os.getenv('Shared_Drive')
+Drawing_Drive = os.getenv('Drawing_Drive')
 
 #custom Modules
 #pylint: disable=wrong-import-position
 sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
 from Loader import Loader
+from Get_Job_Pipe_Files import Get_Job_Pipe_Files
 #pylint: enable=wrong-import-position
 
 #Variables
 path = fr"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job "
+prtSource = fr"\\{Drawing_Drive}\_Drawings Pending Approval (PDF)\Bent Pipe"
 
 #Functions
 def main():
@@ -63,11 +68,28 @@ def main():
       print("Please rename the folder or add it")
       return
 
+   jobInst = Get_Job_Pipe_Files()
+   pipeFolders = defaultdict(str)
+   for bendFolder in bendFolders:
+      drawingFolder = os.path.dirname(bendFolder)
+      pdfs = glob.glob(drawingFolder + r"\*.PDF")
+      jobInst.setFiles(pdfs)
+      pipes = jobInst.getPipes()
+      pipeFolders[bendFolder] = pipes
+      print("Copying Pipe files to Folder...")
+      flags = copyPrts(bendFolder, pipes.keys())
+      print("Files Copied")
+      if len(flags) > 0:
+         print("There was an issue copying some of the pipe files\n"\
+               "See the list below:")
+         for flag in flags:
+            print(flag)
+
    loader = Loader("Generating Pipe Note(s)...", "Note(s) generated\n", .1).start()
    allFlags = []
    for bendFolder in bendFolders:
       lengths = getlengths(bendFolder)
-      flags = makeNote(lengths, bendFolder)
+      flags = makeNote(lengths, bendFolder, pipeFolders)
       for flag in flags:
          allFlags.append(flag)
    loader.stop()
@@ -87,6 +109,17 @@ def findFolder(folder) -> list:
             folders.append(os.path.join(root, direct))
    return folders
 
+def copyPrts(bendFolder, pipes):
+   """Copies the listed part files into the job folder"""
+   flags = []
+   for pipe in pipes:
+      file = glob.glob(fr"{prtSource}\{pipe}.prt")
+      if len(file) == 1:
+         os.system(f'copy "{file[0]}" "{bendFolder}"')
+      else:
+         flags.append(pipe)
+   return flags
+
 def getlengths(folder) -> list:
    """Reads the date from each .prt file and returns a list"""
    pipes = []
@@ -104,15 +137,17 @@ def getlengths(folder) -> list:
       pipes.append([partNumber, cutLength, frontCut, endCut, length == cutLength])
    return pipes
 
-def makeNote(lengths, folder) -> list:
+def makeNote(lengths, folder, pipeFolders) -> list:
    """Creates the formatted not in the job folder"""
    flags = []
    fileName = folder.split("\\")[-1:][0] + " List.txt"
    filePath = folder + "\\" + fileName
+   pipes = pipeFolders[folder]
    with open(filePath,"x",encoding="utf-8") as f:
       f.write("Qty\tPart Number\t\tTotal Length\tFront Cut\tEnd Cut\n")
       for length in lengths:
-         f.write(f"\t{length[0]}\t{length[1]}\t\t{length[2]}\t\t{length[3]}\n")
+         qty = pipes[length[0]]
+         f.write(f"{qty}\t{length[0]}\t{length[1]}\t\t{length[2]}\t\t{length[3]}\n")
          if length[4] is False:
             flags.append(length[0])
    return flags
