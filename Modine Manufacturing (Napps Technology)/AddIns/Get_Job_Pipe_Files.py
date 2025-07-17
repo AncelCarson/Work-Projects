@@ -4,18 +4,17 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 8/7/2025
-# Update Date: 9/7/2025
+# Update Date: 17/7/2025
 # Get_Job_Pipe_Files.py
 
-"""A one line summary of the module or program, terminated by a period.
+"""This program Collects the bent pipe part files for a job.
 
-Leave one blank line.  The rest of this docstring should contain an
-overall description of the module or program.  Optionally, it may also
-contain a brief description of exported classes and functions and/or usage
-examples.
+Given a folder this program will read for PDFs and find the matching
+assembly in the PDM Vault. On finding the assembly, it will search the BOM
+for bent pipe files and add them to the original folder.
 
-Functions:
-    main: Driver of the program
+Classes:
+    Get_Job_Pipe_Files: Handles the file collection and holds the SolidWorks instance
 """
 #Libraries
 import os
@@ -42,6 +41,23 @@ assembly_file_path = [r"C:\NTC Vault\products\acca\acc-ll-liquid circuits\ACCH-L
 
 #Classes
 class Get_Job_Pipe_Files:
+    """Handles the creation of new users and writing to the user file.
+
+    Attributes:
+        sw_app (Solidworks Instance): Instance of solidworks running hte processes
+        vault (PDM Instance): PDM Vault used for file searching
+        files (list(str)): The list of PDF files to search
+        filePaths (list(str)): File Locations in the PDM Vault
+        parts (dict(int)): A disctionary of pipe files and quantities 
+
+    Functions:
+        getPipes: Driver of the process
+        setFiles: Sets the file location to start the search in
+        getPaths: Cyccles through the list of files to get their paths 
+        getPath: Retrieves the file path from the Vault
+        getConfig: Lists the configs of a model for user selection
+        getPartList: Gets the list of pipe parts from an assembly
+    """
     def __init__(self):
         loader = Loader("Opening Solidworks...", "Solidworks Opened\n", .1).start()
         self.sw_app = win32com.client.Dispatch("SldWorks.Application")
@@ -49,7 +65,6 @@ class Get_Job_Pipe_Files:
         loader.stop()
 
         loader = Loader("Connecting to the Vault...", "Vault Connected\n", .1).start()
-        self.vaultPath = os.getenv('Vault_Path')
         self.vault = win32com.client.Dispatch("ConisioLib.EdmVault")
         self.vault.LoginAuto("NTC Vault", 0)
         loader.stop()
@@ -118,12 +133,12 @@ class Get_Job_Pipe_Files:
             config = model.GetConfigurationByName(configs[selection - 1])
             return config
         return configs
-    
+
     def getPartList(self, config: object) -> list[object]:
         """Gets a list of part objects from the assembly configuration"""
         root_components = config.GetRootComponent3(False)
         return root_components.GetChildren
-    
+
     def _traverse_components(self, component_array):
         """Runs through the list of parts and adds select ones to a dictionary"""
         for comp in component_array:
