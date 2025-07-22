@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 5/6/2025
-# Update Date: 9/7/2025
+# Update Date: 22/7/2025
 # Make_Bent_Pipe_Note.py
 
 """This program generates a list of cut lengths for a unit.
@@ -143,13 +143,16 @@ def makeNote(lengths, folder, pipeFolders) -> list:
    fileName = folder.split("\\")[-1:][0] + " List.txt"
    filePath = folder + "\\" + fileName
    pipes = pipeFolders[folder]
-   with open(filePath,"x",encoding="utf-8") as f:
-      f.write("Qty\tPart Number\t\tTotal Length\tFront Cut\tEnd Cut\n")
-      for length in lengths:
-         qty = pipes[length[0]]
-         f.write(f"{qty}\t{length[0]}\t{length[1]}\t\t{length[2]}\t\t{length[3]}\n")
-         if length[4] is False:
-            flags.append(length[0])
+   try:
+      with open(filePath,"x",encoding="utf-8") as f:
+         f.write("Qty\tPart Number\t\tTotal Length\tFront Cut\tEnd Cut\n")
+         for length in lengths:
+            qty = pipes[length[0]]
+            f.write(f"{qty}\t{length[0]}\t{length[1]}\t\t{length[2]}\t\t{length[3]}\n")
+            if length[4] is False:
+               flags.append(length[0])
+   except FileExistsError:
+      print(f"\n\n{fileName} already exists.\nPlease delete it and run the script again.\n")
    return flags
 
 def to8th(num) -> float:

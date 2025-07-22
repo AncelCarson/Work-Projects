@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 8/7/2025
-# Update Date: 17/7/2025
+# Update Date: 22/7/2025
 # Get_Job_Pipe_Files.py
 
 """This program Collects the bent pipe part files for a job.
@@ -114,7 +114,11 @@ class Get_Job_Pipe_Files:
     def getPaths(self, files: list[str]):
         """Getsd the File Paths for a list of files"""
         for file in files:
-            self.filePaths.append(self.getPath(file))
+            filePath = self.getPath(file)
+            if filePath is None:
+                print(f"{file} is not in the vault and has been skipped")
+                continue
+            self.filePaths.append(filePath)
 
     def getPath(self, file: str) -> str:
         """Searches PDM For the path of a file name"""
@@ -122,7 +126,11 @@ class Get_Job_Pipe_Files:
         search.FindFiles = True
         search.FileName = file + ".SLDASM"
         result = search.GetFirstResult()
-        return result.Path
+        try:
+            filePath = result.Path
+        except AttributeError:
+            filePath = None
+        return filePath
 
     def getConfig(self, model: object) -> str:
         """Gets the selected configuration from a SolidWorks Assembly"""
@@ -132,7 +140,7 @@ class Get_Job_Pipe_Files:
             selection = int(input("Which Configuration is needed?\n"))
             config = model.GetConfigurationByName(configs[selection - 1])
             return config
-        return configs
+        return model.GetConfigurationByName(configs[0])
 
     def getPartList(self, config: object) -> list[object]:
         """Gets a list of part objects from the assembly configuration"""
