@@ -88,7 +88,9 @@ def main():
    loader = Loader("Generating Pipe Note(s)...", "Note(s) generated\n", .1).start()
    allFlags = []
    for bendFolder in bendFolders:
-      lengths = getlengths(bendFolder)
+      lengths,flags = getlengths(bendFolder)
+      for flag in flags:
+         allFlags.append(flag)
       flags = makeNote(lengths, bendFolder, pipeFolders)
       for flag in flags:
          allFlags.append(flag)
@@ -120,9 +122,10 @@ def copyPrts(bendFolder, pipes):
          flags.append(pipe)
    return flags
 
-def getlengths(folder) -> list:
+def getlengths(folder) -> tuple[list]:
    """Reads the date from each .prt file and returns a list"""
    pipes = []
+   flags = []
    files = glob.iglob(folder + r'\*.prt')
    for file in files:
       partNumber = os.path.basename(file).split(".")[0]
@@ -131,11 +134,14 @@ def getlengths(folder) -> list:
          content = data.readlines()
       length = to8th(float([s for s in content if "TubeLength=" in s][0].strip().split("=")[1]))
       note = [s for s in content if "Notes=" in s][0].strip().split("=")[1:]
+      if note == ['']:
+         flags.append(partNumber)
+         continue
       cutLength = to8th(float(note[1].strip().split('"')[0]))
       frontCut = to8th(float(note[2].strip().split('"')[0]))
       endCut = to8th(float(note[3].strip().split('"')[0]))
       pipes.append([partNumber, cutLength, frontCut, endCut, length == cutLength])
-   return pipes
+   return [pipes,flags]
 
 def makeNote(lengths, folder, pipeFolders) -> list:
    """Creates the formatted not in the job folder"""
