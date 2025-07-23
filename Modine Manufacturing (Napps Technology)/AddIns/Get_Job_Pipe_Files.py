@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 8/7/2025
-# Update Date: 22/7/2025
+# Update Date: 23/7/2025
 # Get_Job_Pipe_Files.py
 
 """This program Collects the bent pipe part files for a job.
@@ -36,7 +36,7 @@ from Loader import Loader
 #pylint: enable=wrong-import-position
 
 #Variables
-assembly_file_path = [r"C:\NTC Vault\products\acca\acc-ll-liquid circuits\ACCH-LLDH-0800.SLDASM",
+assembly_file_path = [r"J:\_A NTC GENERAL FILES\_JOB FILES\Job 9132A-01 Joshua Mandrich (1)ACCU080 460V Northstar Rink 04 11 25\Drawings - Mechanical\ACCU-DSFN-0801_0.pdf",
                       r"C:\NTC Vault\products\acca\acc-ll-liquid circuits\ACCH-LLDH-0801.SLDASM"]
 
 #Classes
@@ -138,6 +138,7 @@ class Get_Job_Pipe_Files:
         if len(configs) != 1:
             makeMenu(f"Configurations for {model.GetTitle}", configs)
             selection = int(input("Which Configuration is needed?\n"))
+            model.ShowConfiguration2(configs[selection - 1])
             config = model.GetConfigurationByName(configs[selection - 1])
             return config
         return model.GetConfigurationByName(configs[0])
