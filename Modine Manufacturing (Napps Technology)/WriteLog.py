@@ -27,9 +27,14 @@ import os
 import sys
 import glob
 from datetime import datetime
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+User_Path = os.getenv('User_Path')
 
 #Variables
-folder = r"O:\Daily Log\*" # * means all if need specific format then *.txt
+folder = fr"{User_Path}\Daily Log\*" # * means all if need specific format then *.txt
 today = datetime.now().date()
 fileDate = lambda x: datetime.fromtimestamp(os.path.getctime(x)).date()
 

@@ -27,13 +27,18 @@ import os
 import sys
 import glob
 import pandas as pd
+from dotenv import load_dotenv
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta, MO, SU
 
+#Secret Variables
+load_dotenv()
+User_Path = os.getenv('User_Path')
+
 #Variables
 # day_set = 1 ## Used when Running Past Weeks
-input_folder = r"O:\Daily Log\*" # * means all if need specific format then *.txt
-output_folder = r"O:\Weekly Log"
+input_folder = fr"{User_Path}\Daily Log\*" # * means all if need specific format then *.txt
+output_folder = fr"{User_Path}\Weekly Log"
 today = date.today()
 # today = date.today() + relativedelta(weekday=SU(day_set * -1)) ## Used when Running Past Weeks
 file_day = today.strftime('%y%m%d')

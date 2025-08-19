@@ -33,16 +33,11 @@ from datetime import datetime, date
 
 #Secret Variables
 load_dotenv()
-Shared_Drive = os.getenv('Shared_Drive')
-
-#custom Modules
-#pylint: disable=wrong-import-position
-sys.path.insert(0,fr'\\{Shared_Drive}\Programs\Add_ins')
-#pylint: enable=wrong-import-position
+User_Path = os.getenv('User_Path')
 
 #Variables
-input_folder = r"O:\Daily Log\*" # * means all if need specific format then *.txt
-output_folder = r"O:\Monthly Log"
+input_folder = fr"{User_Path}\Daily Log\*" # * means all if need specific format then *.txt
+output_folder = fr"{User_Path}\Monthly Log"
 today = date.today()
 # today = date.today() - timedelta(days = 1)
 file_day = today.strftime('%y%m%d')

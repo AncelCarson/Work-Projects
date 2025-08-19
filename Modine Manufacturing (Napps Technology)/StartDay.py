@@ -11,9 +11,14 @@
 import os
 import glob
 from datetime import datetime
+from dotenv import load_dotenv
+
+#Secret Variables
+load_dotenv()
+User_Path = os.getenv('User_Path')
 
 #Variables
-folder = r"O:\Daily Log"
+folder = fr"{User_Path}\Daily Log"
 
 #Functions
 " Main Finction "
