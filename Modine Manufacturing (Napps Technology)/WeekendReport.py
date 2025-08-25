@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/2/2024
-# Update Date: 20/3/2025
+# Update Date: 25/8/2025
 # WeekendReport.py
 
 """This Program compiles a weeks worth of logs and generates a report.
@@ -55,10 +55,10 @@ def main():
    week_stats = [[],[],[],[]]
    lunch = []
    wfh = []
-   list_of_files = glob.glob(input_folder) 
+   list_of_files = glob.glob(input_folder)
    list_of_files.sort(key=os.path.getctime, reverse=True)
    for file in list_of_files:
-      if count > 7:
+      if count >= 7:
          break
       created_day = datetime.fromtimestamp(os.path.getctime(file)).date()
       if created_day <= today and created_day >= last_monday:
