@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 4/2/2025
+# Update Date: 8/9/2025
 # Price Getter.py
 # Rev 1
 
@@ -35,7 +35,7 @@ from Loader import Loader
 #pylint: enable=wrong-import-position
 
 #variables
-folder = "2024 Q1.2"
+folder = "2026 Q3"
 
 #Input Sheets
 costedfile = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\BM_CostedMaterials.xls'
@@ -51,11 +51,14 @@ topOut = fr'\\{Shared_Drive}\Ancel\Pricing\{folder}\top price out.xlsx'
 def main():
    loader = Loader("Reading Pricing Files...", "Prices Collected\n", .1).start()
 
+   extraSheets = pd.ExcelFile(costedfile).sheet_names[1:]
+
    " Costed Bill of Materials Load "
    dfCost = pd.read_excel(costedfile)
    print(dfCost)
-   dfCost = pd.concat([dfCost, pd.read_excel(costedfile, sheet_name = "Sheet2")], ignore_index = True)
-   print(dfCost)
+   for sheet in extraSheets:
+      dfCost = pd.concat([dfCost, pd.read_excel(costedfile, sheet_name = sheet)], ignore_index = True)
+      print(dfCost)
    dfCost = dfCost.fillna("")
    costs = pd.DataFrame(getOptionCosts(dfCost), columns = ['BOM','Feature','Option','Price'])
    print(costs)
@@ -103,7 +106,7 @@ def getOptionCosts(dfCost):
       if index == 0:
          costs.append([row["\nBill Number"],row["\nOption"],0,0])    #Set the fitrst row of the array
          count += 1
-      elif row["\nBill Number"] != "":                                             #Finds Header rows for calculation
+      elif row["\nBill Number"] != "":                               #Finds Header rows for calculation
          if row["\nOption"] != "Base":                               #If the Feature is not Base, separate Feature and Option
             featureCode = row["\nOption"].split("-")[0]
             optionCode = row["\nOption"].split("-")[1]
@@ -120,7 +123,7 @@ def getOptionCosts(dfCost):
             costs.append([row["\nBill Number"],row["\nOption"],0,0]) #Set Feature to Base
          costs[count-1][3] = dfCost['Unnamed: 15'][index-1]          #Add the Pricing from the line above to the previous entry
          count += 1
-   costs[count-1][3] = dfCost['Unnamed: 15'][len(dfCost)-1]                #Write in Final cost to complete list
+   costs[count-1][3] = dfCost['Unnamed: 15'][len(dfCost)-1]          #Write in Final cost to complete list
    return costs
 
 def getPartCosts(dfCost):
