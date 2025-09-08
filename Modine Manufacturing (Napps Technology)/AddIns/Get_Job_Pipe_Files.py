@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 8/7/2025
-# Update Date: 23/7/2025
+# Update Date: 8/9/2025
 # Get_Job_Pipe_Files.py
 
 """This program Collects the bent pipe part files for a job.
@@ -36,8 +36,7 @@ from Loader import Loader
 #pylint: enable=wrong-import-position
 
 #Variables
-assembly_file_path = [r"J:\_A NTC GENERAL FILES\_JOB FILES\Job 9132A-01 Joshua Mandrich (1)ACCU080 460V Northstar Rink 04 11 25\Drawings - Mechanical\ACCU-DSFN-0801_0.pdf",
-                      r"C:\NTC Vault\products\acca\acc-ll-liquid circuits\ACCH-LLDH-0801.SLDASM"]
+assembly_file_path = [r"G:\_A NTC GENERAL FILES\_JOB FILES\Job 1111A-01 Test Folder\Drawings - Mechanical\ACCX-DSFN-0601_1.pdf"]
 
 #Classes
 class Get_Job_Pipe_Files:
@@ -85,6 +84,7 @@ class Get_Job_Pipe_Files:
     def getPipes(self):
         """Gets the list of pipes and their quantities from a list of PDFs"""
         drawingNames = []
+        self.parts = defaultdict(int)
         for file in self.files:
             fileName = os.path.basename(file).split(".")[0]
             if '_' in fileName:
@@ -92,13 +92,15 @@ class Get_Job_Pipe_Files:
             else:
                 drawingNames.append(fileName)
         self.getPaths(drawingNames)
+        # self.filePaths = self.getLatestVersion(self.filePaths)
         for file in self.filePaths:
+            self.checkVersion(file)
             loader = Loader("Loading Solidworks File...", "File Loaded\n", .1).start()
             model = self.sw_app.OpenDoc(file, 2)
             loader.stop()
             config = self.getConfig(model)
             loader = Loader(f"Collecting Parts from {model.GetTitle}...",
-                            "Parts Collected\n", .05).start()
+                            f"Parts Collected from {model.GetTitle}\n", .05).start()
             partList = self.getPartList(config)
             self._traverse_components(partList)
             self.sw_app.CloseDoc(model.GetTitle)
@@ -109,10 +111,12 @@ class Get_Job_Pipe_Files:
 
     def setFiles(self, files: list[str]):
         """Sets the list of files to be processed"""
+        self.files = None
         self.files = files
 
     def getPaths(self, files: list[str]):
         """Getsd the File Paths for a list of files"""
+        self.filePaths = []
         for file in files:
             filePath = self.getPath(file)
             if filePath is None:
@@ -131,6 +135,16 @@ class Get_Job_Pipe_Files:
         except AttributeError:
             filePath = None
         return filePath
+
+    def checkVersion(self, file: str):
+        """Checks if the user has the most recent file version and prompts if they do not"""
+        edmFile, folder = self.vault.GetFileFromPath(file, None)
+        if edmFile:
+            localVer = edmFile.GetLocalVersionNo(folder.ID)
+            latestVer = edmFile.CurrentVersion
+            if localVer < latestVer:
+                fileName = os.path.basename(file)
+                print(f"{fileName} is cached as an old version and will be updated.")
 
     def getConfig(self, model: object) -> str:
         """Gets the selected configuration from a SolidWorks Assembly"""
