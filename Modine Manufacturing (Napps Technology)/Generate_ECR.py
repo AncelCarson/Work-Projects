@@ -3,7 +3,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 14/10/2020
-# Update Date: 4/30/2025
+# Update Date: 22/9/2025
 # Generate_ECR.py
 
 """A one line summary of the module or program, terminated by a period.
@@ -34,7 +34,7 @@ load_dotenv()
 Shared_Drive = os.getenv('Shared_Drive')
 
 #Variables
-logFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\ECR Log 231121.xlsx'
+logFile = fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Change Requests\ECR Log 250922.xlsx'
 list_of_files = glob.glob(fr'\\{Shared_Drive}\Engineering Change Requests (ECR)\Engineering Change Request Form*.xlsx') # * means all if need specific format then *.csv
 latest_file = max(list_of_files, key=os.path.getctime)
 dfIn = pd.read_excel(latest_file, sheet_name = 'Lookup Tables')
