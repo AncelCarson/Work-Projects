@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 5/6/2025
-# Update Date: 22/7/2025
+# Update Date: 10/2/2025
 # Make_Bent_Pipe_Note.py
 
 """This program generates a list of cut lengths for a unit.
@@ -97,9 +97,12 @@ def main():
    loader.stop()
 
    if len(allFlags) != 0:
-      print("The following files had Lengths that did not match:")
+      errors = {"none": "No note found",
+                "count": "Missing or incorrect note fields",
+                "length": "Note Length and calculated length did not match",}
+      print("The following files had note errors:")
       for flag in allFlags:
-         print(flag)
+         print(f"{flag[0]}: {errors[flag[1]]}")
       print("Check the pipe in Bend Pro and run this simulation again")
 
 def findFolder(folder) -> list:
@@ -135,7 +138,10 @@ def getlengths(folder) -> tuple[list]:
       length = to8th(float([s for s in content if "TubeLength=" in s][0].strip().split("=")[1]))
       note = [s for s in content if "Notes=" in s][0].strip().split("=")[1:]
       if note == ['']:
-         flags.append(partNumber)
+         flags.append([partNumber,"none"])
+         continue
+      if len(note) != 4:
+         flags.append([partNumber,"count"])
          continue
       cutLength = to8th(float(note[1].strip().split('"')[0]))
       frontCut = to8th(float(note[2].strip().split('"')[0]))
@@ -156,7 +162,7 @@ def makeNote(lengths, folder, pipeFolders) -> list:
             qty = pipes[length[0]]
             f.write(f"{qty}\t{length[0]}\t{length[1]}\t\t{length[2]}\t\t{length[3]}\n")
             if length[4] is False:
-               flags.append(length[0])
+               flags.append([length[0],"length"])
    except FileExistsError:
       print(f"\n\n{fileName} already exists.\nPlease delete it and run the script again.\n")
    return flags
