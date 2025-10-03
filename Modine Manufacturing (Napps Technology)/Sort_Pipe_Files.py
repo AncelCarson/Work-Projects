@@ -57,6 +57,7 @@ def main():
    """ Main Finction """
    count = 0
    missingFiles = []
+   existingFiles = []
 
    loader2 = Loader("Sorting Files...", "Files Sorted", 0.1).start()
    for fileName in fileList:
@@ -69,12 +70,16 @@ def main():
          shutil.move(prtFile,(prtLocation + folder + "\\" + fileName + ".prt"))
       except IndexError:
          missingFiles.append(fileName)
+      except FileExistsError:
+         existingFiles.append(fileName)
       count += 1
    loader2.stop()
 
    print("The following files were missing:")
    print(*missingFiles, sep="\n")
 
+   print("The following files already existed in approved folder:")
+   print(*existingFiles, sep="\n")
 
 
 if __name__ == "__main__":
