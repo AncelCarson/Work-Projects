@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 5/6/2025
-# Update Date: 10/2/2025
+# Update Date: 10/6/2025
 # Make_Bent_Pipe_Note.py
 
 """This program generates a list of cut lengths for a unit.
@@ -16,6 +16,8 @@ and cut lengths.
 Functions:
    main: Driver of the program
    findFolder: Finds the Bent Pipe Folder(s) in the Drawings Folder
+   copyParts: Copies Parts fromt he approved Folder to the job folder
+   checkApproval: Checks if a Part is on a different folder
    getLengths: Gets the list of tube lengths
    makeNote: Creates the .txt that holds all the information
    to8th: Rounds a float to the nearest 1/8"
@@ -42,7 +44,15 @@ from Get_Job_Pipe_Files import Get_Job_Pipe_Files
 
 #Variables
 path = fr"\\{Shared_Drive}\_A NTC GENERAL FILES\_JOB FILES\Job "
-prtSource = fr"\\{Drawing_Drive}\_Drawings Pending Approval (PDF)\Bent Pipe"
+prtSource = fr'\\{Shared_Drive}\_Approved for use\DRAWINGS (PDF)\Bent Pipe\BENDER Files'
+pendingPrt = fr"\\{Drawing_Drive}\_Drawings Pending Approval (PDF)\Bent Pipe"
+
+sourceFolders = {"2014": r"\FORMED PIPE .625 (CPPR-TBGA-2014)",
+                 "2016": r"\FORMED PIPE .875 (CPPR-TBGA-2016)",
+                 "2017": r"\FORMED PIPE 1.125 (CPPR-TBGA-2017)",
+                 "2018": r"\FORMED PIPE 1.375 (CPPR-TBGA-2018)",
+                 "2019": r"\FORMED PIPE 1.625 (CPPR-TBGA-2019)",
+                 "2020": r"\FORMED PIPE 2.125 (CPPR-TBGA-2020)",}
 
 #Functions
 def main():
@@ -80,6 +90,7 @@ def main():
       flags = copyPrts(bendFolder, pipes.keys())
       print("Files Copied")
       if len(flags) > 0:
+         flags = checkApproval(flags)
          print("There was an issue copying some of the pipe files\n"\
                "See the list below:")
          for flag in flags:
@@ -118,12 +129,25 @@ def copyPrts(bendFolder, pipes):
    """Copies the listed part files into the job folder"""
    flags = []
    for pipe in pipes:
-      file = glob.glob(fr"{prtSource}\{pipe}.prt")
+      size = pipe.split("-")[2][:4]
+      folder = sourceFolders[size]
+      file = glob.glob(fr"{prtSource}{folder}\{pipe}.prt")
       if len(file) == 1:
          os.system(f'copy "{file[0]}" "{bendFolder}"')
       else:
          flags.append(pipe)
    return flags
+
+def checkApproval(flags):
+   """Checks if a file is saved in the pending folder and attacheds a note"""
+   parts = []
+   for flag in flags:
+      file = glob.glob(fr"{pendingPrt}\{flag}.prt")
+      if len(file) == 1:
+         parts.append(f"{flag}: Was not approved")
+      else:
+         parts.append(f"{flag}: Was not simulated")
+   return parts
 
 def getlengths(folder) -> tuple[list]:
    """Reads the date from each .prt file and returns a list"""
