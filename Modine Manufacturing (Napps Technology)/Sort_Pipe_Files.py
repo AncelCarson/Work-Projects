@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 13/11/24
-# Update Date: 4/2/2025
+# Update Date: 17/10/2025
 # Sort_Pipe_Files.py
 
 """Sorts Approved step files and simulated prt files into Approved for Use.
@@ -66,7 +66,10 @@ def main():
          prtFile = [s for s in prtFiles if fileName in s][0]
          size = fileName.split("-")[2][:4]
          folder = folders[size]
-         os.rename(stepFiles[count],(stepLocation + folder + "\\" + fileName + ".step"))
+         step_dest_path = stepLocation + folder + "\\" + fileName + ".step"
+         if os.path.exists(step_dest_path):
+            raise FileExistsError
+         os.rename(stepFiles[count],step_dest_path)
          shutil.move(prtFile,(prtLocation + folder + "\\" + fileName + ".prt"))
       except IndexError:
          missingFiles.append(fileName)
