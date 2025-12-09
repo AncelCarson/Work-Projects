@@ -4,7 +4,7 @@
 # Author: Ancel Carson
 # Orginization: Napps Technology Comporation
 # Creation Date: 3/6/2025
-# Update Date: 5/6/2025
+# Update Date: 9/12/2025
 # Part_Issuing_Check.py
 
 """This program takes a parts issued report and shows what parts need to be added.
@@ -67,7 +67,12 @@ def main():
    with open(filePath,encoding="utf-8") as f:
       lines = [line.split() for line in f if "-" in line]
 
-   parts = [line for line in lines if len(line) == 10]
+   parts =[]
+   for line in lines:
+      if len(line) == 10:
+         parts.append(line)
+      elif len(line) == 14 and line[11] == "Corporation":
+         parts.append(line[:10])
 
    loader.stop()
 
